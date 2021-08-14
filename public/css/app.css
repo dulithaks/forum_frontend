@@ -10878,3 +10878,10 @@ textarea.form-control-lg {
 .main-content {
   max-width: 1000px;
 }
+
+.validation-errors {
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: #dc3545;
+}
