@@ -4999,27 +4999,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
 
 /***/ }),
@@ -5035,6 +5014,52 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -10500,11 +10525,14 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container", staticStyle: { "max-width": "1000px" } },
+    {
+      staticClass: "container bg-light vh-100 px-0",
+      staticStyle: { "max-width": "1000px" }
+    },
     [
       _vm._m(0),
       _vm._v(" "),
-      _c("div", { staticClass: "mt-2" }, [_c("router-view")], 1)
+      _c("div", { staticClass: "mt-2 w-100 px-2" }, [_c("router-view")], 1)
     ]
   )
 }
@@ -10519,7 +10547,7 @@ var staticRenderFns = [
       [
         _c("div", { staticClass: "container-fluid" }, [
           _c("a", { staticClass: "navbar-brand", attrs: { href: "#" } }, [
-            _vm._v("Navbar")
+            _vm._v("Forum")
           ]),
           _vm._v(" "),
           _c(
@@ -10547,121 +10575,10 @@ var staticRenderFns = [
             [
               _c("ul", { staticClass: "navbar-nav me-auto mb-2 mb-lg-0" }, [
                 _c("li", { staticClass: "nav-item" }, [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "nav-link active",
-                      attrs: { "aria-current": "page", href: "#" }
-                    },
-                    [_vm._v("Home")]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("li", { staticClass: "nav-item" }, [
                   _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-                    _vm._v("Link")
+                    _vm._v("Approve Posts")
                   ])
-                ]),
-                _vm._v(" "),
-                _c("li", { staticClass: "nav-item dropdown" }, [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "nav-link dropdown-toggle",
-                      attrs: {
-                        href: "#",
-                        id: "navbarDropdown",
-                        role: "button",
-                        "data-bs-toggle": "dropdown",
-                        "aria-expanded": "false"
-                      }
-                    },
-                    [
-                      _vm._v(
-                        "\n                            Dropdown\n                        "
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "ul",
-                    {
-                      staticClass: "dropdown-menu",
-                      attrs: { "aria-labelledby": "navbarDropdown" }
-                    },
-                    [
-                      _c("li", [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "dropdown-item",
-                            attrs: { href: "#" }
-                          },
-                          [_vm._v("Action")]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("li", [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "dropdown-item",
-                            attrs: { href: "#" }
-                          },
-                          [_vm._v("Another action")]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("li", [_c("hr", { staticClass: "dropdown-divider" })]),
-                      _vm._v(" "),
-                      _c("li", [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "dropdown-item",
-                            attrs: { href: "#" }
-                          },
-                          [_vm._v("Something else here")]
-                        )
-                      ])
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("li", { staticClass: "nav-item" }, [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "nav-link disabled",
-                      attrs: {
-                        href: "#",
-                        tabindex: "-1",
-                        "aria-disabled": "true"
-                      }
-                    },
-                    [_vm._v("Disabled")]
-                  )
                 ])
-              ]),
-              _vm._v(" "),
-              _c("form", { staticClass: "d-flex" }, [
-                _c("input", {
-                  staticClass: "form-control me-2",
-                  attrs: {
-                    type: "search",
-                    placeholder: "Search",
-                    "aria-label": "Search"
-                  }
-                }),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-outline-success",
-                    attrs: { type: "submit" }
-                  },
-                  [_vm._v("Search")]
-                )
               ])
             ]
           )
@@ -10700,8 +10617,206 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", [
-      _c("h3", { staticClass: "text-center" }, [_vm._v("All Books")]),
-      _c("br")
+      _c(
+        "div",
+        {
+          staticClass:
+            "d-flex justify-content-between text-start pt-4 pb-2 px-2"
+        },
+        [
+          _c("h2", [_vm._v("Posts")]),
+          _vm._v(" "),
+          _c("div", [
+            _c("form", { staticClass: "d-flex" }, [
+              _c("input", {
+                staticClass: "form-control me-2",
+                attrs: {
+                  type: "search",
+                  placeholder: "Search",
+                  "aria-label": "Search"
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-outline-success",
+                  attrs: { type: "submit" }
+                },
+                [_vm._v("Search")]
+              )
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "accordion", attrs: { id: "accordionExample" } },
+        [
+          _c("div", { staticClass: "accordion-item" }, [
+            _c(
+              "h2",
+              { staticClass: "accordion-header", attrs: { id: "headingOne" } },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: "accordion-button",
+                    attrs: {
+                      type: "button",
+                      "data-bs-toggle": "collapse",
+                      "data-bs-target": "#collapseOne",
+                      "aria-expanded": "true",
+                      "aria-controls": "collapseOne"
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                    Accordion Item #1\n                "
+                    )
+                  ]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "accordion-collapse collapse show",
+                attrs: {
+                  id: "collapseOne",
+                  "aria-labelledby": "headingOne",
+                  "data-bs-parent": "#accordionExample"
+                }
+              },
+              [
+                _c("div", { staticClass: "accordion-body" }, [
+                  _c("strong", [
+                    _vm._v("This is the first item's accordion body.")
+                  ]),
+                  _vm._v(
+                    " It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the "
+                  ),
+                  _c("code", [_vm._v(".accordion-body")]),
+                  _vm._v(
+                    ", though the transition does limit overflow.\n                "
+                  )
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "accordion-item" }, [
+            _c(
+              "h2",
+              { staticClass: "accordion-header", attrs: { id: "headingTwo" } },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: "accordion-button collapsed",
+                    attrs: {
+                      type: "button",
+                      "data-bs-toggle": "collapse",
+                      "data-bs-target": "#collapseTwo",
+                      "aria-expanded": "false",
+                      "aria-controls": "collapseTwo"
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                    Accordion Item #2\n                "
+                    )
+                  ]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "accordion-collapse collapse",
+                attrs: {
+                  id: "collapseTwo",
+                  "aria-labelledby": "headingTwo",
+                  "data-bs-parent": "#accordionExample"
+                }
+              },
+              [
+                _c("div", { staticClass: "accordion-body" }, [
+                  _c("strong", [
+                    _vm._v("This is the second item's accordion body.")
+                  ]),
+                  _vm._v(
+                    " It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the "
+                  ),
+                  _c("code", [_vm._v(".accordion-body")]),
+                  _vm._v(
+                    ", though the transition does limit overflow.\n                "
+                  )
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "accordion-item" }, [
+            _c(
+              "h2",
+              {
+                staticClass: "accordion-header",
+                attrs: { id: "headingThree" }
+              },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: "accordion-button collapsed",
+                    attrs: {
+                      type: "button",
+                      "data-bs-toggle": "collapse",
+                      "data-bs-target": "#collapseThree",
+                      "aria-expanded": "false",
+                      "aria-controls": "collapseThree"
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                    Accordion Item #3\n                "
+                    )
+                  ]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "accordion-collapse collapse",
+                attrs: {
+                  id: "collapseThree",
+                  "aria-labelledby": "headingThree",
+                  "data-bs-parent": "#accordionExample"
+                }
+              },
+              [
+                _c("div", { staticClass: "accordion-body" }, [
+                  _c("strong", [
+                    _vm._v("This is the third item's accordion body.")
+                  ]),
+                  _vm._v(
+                    " It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the "
+                  ),
+                  _c("code", [_vm._v(".accordion-body")]),
+                  _vm._v(
+                    ", though the transition does limit overflow.\n                "
+                  )
+                ])
+              ]
+            )
+          ])
+        ]
+      )
     ])
   }
 ]

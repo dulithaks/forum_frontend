@@ -7,11 +7,6 @@
     <title>Laravel</title>
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
     <link href="{{ mix('css/app.css') }}" type="text/css" rel="stylesheet"/>
-    <style>
-        .bg-light {
-            background-color: #eae9e9 !important;
-        }
-    </style>
 </head>
 <body>
 <div id="app"></div>
