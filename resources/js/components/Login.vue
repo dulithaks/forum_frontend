@@ -5,14 +5,15 @@
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" placeholder="Enter email">
+            <input v-model="form.email" type="email" class="form-control" id="email" placeholder="Enter email">
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="Enter password"/>
+            <input v-model="form.password" type="password" class="form-control" id="password"
+                   placeholder="Enter password"/>
         </div>
         <div class="mb-3 text-center">
-            <button type="button" class="btn btn-dark">Login</button>
+            <button v-on:click.prevent="login" type="button" class="btn btn-dark">Login</button>
         </div>
     </div>
 </template>
@@ -21,7 +22,34 @@
 export default {
     data() {
         return {
-            books: []
+            form: {
+                email: '',
+                password: '',
+            },
+        }
+    },
+    methods: {
+        async login() {
+            try {
+                const requestOptions = {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(this.form),
+                };
+
+                let response = await fetch('http://127.0.0.1:8000/api/login', requestOptions);
+
+                const responseData = await response.json();
+                console.log(responseData.data);
+                localStorage.setItem('user', JSON.stringify(responseData.data));
+                await this.$router.push('Home');
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 }

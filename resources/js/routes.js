@@ -3,6 +3,7 @@ import Login from "./components/Login";
 
 export const routes = [
     {
+        name: 'home',
         path: '/',
         component: Posts
     },
