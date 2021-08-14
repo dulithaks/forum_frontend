@@ -10866,3 +10866,10 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.login-form {
+  max-width: 500px;
+}
+
+.main-content {
+  max-width: 1000px;
+}
