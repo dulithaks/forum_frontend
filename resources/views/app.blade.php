@@ -14,11 +14,7 @@
     </style>
 </head>
 <body>
-<div id="app">
-</div>
-<div id="app-3">
-    <span v-if="seen">Now you see me</span>
-</div>
+<div id="app"></div>
 <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
 </body>
 </html>
