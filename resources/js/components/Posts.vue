@@ -1,8 +1,7 @@
 <template>
     <div>
         <h3 class="text-center">All Books</h3><br/>
-
-
+        
     </div>
 </template>
 

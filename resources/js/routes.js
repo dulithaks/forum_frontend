@@ -1,9 +1,9 @@
-import AllBooks from './components/Posts.vue';
+import Posts from "./components/Posts";
 
 export const routes = [
     {
         name: 'home',
         path: '/',
-        component: AllBooks
+        component: Posts
     },
 ];
