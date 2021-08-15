@@ -1,5 +1,5 @@
 <template>
-    <div class="post-block d-flex my-5 bg-white flex-column rounded-3 shadow">
+    <div class="post-block d-flex mb-5 bg-white flex-column rounded-3 shadow">
         <div class="bg-white p-2">
             <!-- Post -->
             <div class="d-flex flex-row user-info">
@@ -23,8 +23,8 @@
                 <textarea v-model="form.body" class="form-control ml-1 shadow-none textarea"></textarea>
             </div>
             <div class="mt-1 mx-5 text-right">
-                <button v-on:click.prevent="saveComment" class="btn btn-primary btn-sm shadow-none" type="button">Comment</button>
-                <button v-on:click.prevent="cancel" class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button">Cancel
+                <button v-on:click.prevent="saveComment" class="btn btn-dark" type="button">Comment</button>
+                <button v-on:click.prevent="cancel" class="btn btn-outline-dark ms-1" type="button">Cancel
                 </button>
             </div>
         </div>

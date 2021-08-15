@@ -9,6 +9,15 @@ class RouteService {
         return RouteService.baseUrl + `posts/${postId}/comments`
     }
 
+    getPostsUrl(form) {
+        let url = RouteService.baseUrl + 'posts';
+        if(form.term) {
+            url +=  '?term=' + form.term.trim();
+        }
+
+        return url;
+    }
+
 }
 
 export default new RouteService();

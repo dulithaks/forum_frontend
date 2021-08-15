@@ -1,24 +1,39 @@
 <template>
 
     <div class="main-content container bg-light min-vh-100 px-0 shadow">
-        <nav v-if="!['login', 'register', 'notfound'].includes($route.name)" class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav v-if="!['login', 'register', 'notfound'].includes($route.name)"
+             class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
-                <router-link to="/" class="navbar-brand" href="#">Forum</router-link>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <router-link to="/" class="navbar-brand font-monospace" href="#">Forum</router-link>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <router-link to="/login" class="nav-item nav-link">Login</router-link>
+                            <router-link to="/" class="nav-link" href="#">Create</router-link>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Posts
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><router-link to="/" class="dropdown-item" href="#">Create</router-link></li>
+                                <li><router-link to="/" class="dropdown-item" href="#">My Posts</router-link></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><router-link to="/" class="dropdown-item" href="#">Waiting for approve</router-link></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li style="align-content:center">
+                            <a v-on:click="logout" type="submit"
+                               class="text-white text-decoration-none">Logout</a>
                         </li>
                     </ul>
                 </div>
-                <ul class="nav navbar-nav navbar-right">
-                    <li style="align-content:center">
-                        <a v-on:click="logout" type="submit" class="text-white text-decoration-none" >Logout</a>
-                    </li>
-                </ul>
             </div>
         </nav>
 
@@ -42,7 +57,7 @@ export default {
         }
     },
     methods: {
-        async logout () {
+        async logout() {
             AuthService.logout(this.$router);
         }
     }

@@ -2,6 +2,9 @@
     max-width: 1000px;
 }
 
+.navbar-brand {
+    font-size: 2em;
+}
 
 .validation-errors {
     width: 100%;
@@ -9,3 +12,12 @@
     font-size: .875em;
     color: #dc3545;
 }
+
+.nav-item {
+    .nav-link {
+        font-size: 1.2rem;
+        color: white;
+        text-transform: uppercase;
+    }
+}
+

@@ -1,4 +1,3 @@
-import Posts from "./components/Posts";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";
 import AuthService from "./services/auth.service";
