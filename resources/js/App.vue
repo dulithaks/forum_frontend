@@ -1,7 +1,7 @@
 <template>
 
     <div class="main-content container bg-light vh-100 px-0">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav v-if="!['login', 'register', 'notfound'].includes($route.name)" class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
                 <router-link to="/" class="navbar-brand" href="#">Forum</router-link>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,6 +14,11 @@
                         </li>
                     </ul>
                 </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li style="align-content:center">
+                        <a v-on:click="logout" type="submit" class="text-white text-decoration-none" >Logout</a>
+                    </li>
+                </ul>
             </div>
         </nav>
 
@@ -24,5 +29,23 @@
 </template>
 
 <script>
-export default {}
+import AuthService from './services/auth.service';
+
+export default {
+    data() {
+        return {
+            form: {
+                email: '',
+                password: '',
+            },
+            errors: [],
+        }
+    },
+    methods: {
+        async logout () {
+            AuthService.logout();
+            await this.$router.push({ name: 'login' })
+        }
+    }
+}
 </script>

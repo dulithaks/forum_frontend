@@ -63,7 +63,7 @@ export default {
 
                 if (response.status === 200) {
                     localStorage.setItem('user', JSON.stringify(responseData.data));
-                    await this.$router.push('Home');
+                    await this.$router.push('/');
                 }
 
                 if (response.status === 422) {
@@ -76,6 +76,7 @@ export default {
                     }
                 }
             } catch (error) {
+                console.log(error)
                 toastr.error('Something went wrong. Please try again.', 'Oops!')
             }
         },
