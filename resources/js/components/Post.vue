@@ -16,15 +16,25 @@
             </div>
 
             <!-- Comments -->
-            <comments :post-id="post.id" :latest-comments="post.latest_comments" ref="comments" :key="post.id"></comments>
+            <comments :post-id="post.id" :latest-comments="post.latest_comments" ref="comments"
+                      :key="post.id"></comments>
         </div>
         <div class="bg-white p-2 pt-0">
             <div class="d-block mx-5">
                 <textarea v-model="form.body"
-                          v-on:keydown="validate('body')"
-                          v-on:change="validate('body')"
+                          v-on:keyup="resetServerValidationErrors"
+                          :class="[
+                            $v.form.body.$dirty && $v.form.body.$error ? 'border-danger' : ''
+                          ]"
                           class="form-control ml-1 shadow-none textarea"></textarea>
                 <span v-if="errors.body" class="validation-errors">{{ errors.body[0] }}</span>
+                <div v-if="!$v.form.body.required && $v.form.body.$dirty"
+                     class="validation-errors">Field is required
+                </div>
+                <div v-if="!$v.form.body.minLength && $v.form.body.$dirty"
+                     class="validation-errors">Comment must have at least {{ $v.form.body.$params.minLength.min }}
+                    letters.
+                </div>
             </div>
             <div class="mt-1 mx-5 text-right">
                 <button v-on:click.prevent="create" class="btn btn-dark" type="button">Comment</button>
@@ -39,6 +49,7 @@
 import AuthService from './../services/auth.service'
 import RouteService from './../services/route.service';
 import Comments from "./Comments";
+import {minLength, required} from "vuelidate/lib/validators";
 
 export default {
     props: ['post'],
@@ -57,10 +68,21 @@ export default {
             errors: [],
         }
     },
+    validations: {
+        form: {
+            body: {
+                required,
+                minLength: minLength(10)
+            },
+        },
+    },
     methods: {
         async create() {
             try {
-                
+                this.$v.$touch()
+                if (this.$v.$invalid) {
+                    return toastr.error('Please check input.');
+                }
 
                 const requestOptions = {
                     method: 'POST',
@@ -83,7 +105,7 @@ export default {
 
                     console.log(responseData, responseData.errors)
 
-                    if(!responseData.errors && responseData.message) {
+                    if (!responseData.errors && responseData.message) {
                         toastr.error(responseData.message);
                     }
                 }
@@ -92,20 +114,11 @@ export default {
                 toastr.error('Something went wrong. Please try again.', 'Oops!')
             }
         },
-        validate(name) {
-            setTimeout(() => {
-                let value = this.form[name];
-                console.log(name, value)
-
-                if (value) {
-                    this.errors[name] = null;
-                }
-                else {
-                    this.errors[name] = [`The ${name} field is required.`];
-                }
-            }, 100);
+        resetServerValidationErrors() {
+            this.$v.$touch();
+            this.errors = [];
         },
-        cancel () {
+        cancel() {
             this.form.body = '';
         }
     }
