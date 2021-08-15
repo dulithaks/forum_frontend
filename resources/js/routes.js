@@ -2,6 +2,7 @@ import Posts from "./components/Posts";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";
 import AuthService from "./services/auth.service";
+import PostList from "./components/PostList";
 
 export const routes = [
     {
@@ -12,7 +13,7 @@ export const routes = [
     {
         name: 'home',
         path: '/',
-        component: Posts,
+        component: PostList,
         beforeEnter: (to, form, next) =>{
             if(AuthService.isAuthUser()) {
                 next();

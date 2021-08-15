@@ -23,13 +23,13 @@
 
 <script>
 import AuthService from './../services/auth.service'
+import RouteService from './../services/route.service'
 
 export default {
     props: ['latestComments', 'postId'],
 
     data() {
         return {
-            postId: null,
             page: 1,
             comments: [],
         }
@@ -46,7 +46,7 @@ export default {
         // console.log(this.comments)
     },
     methods: {
-        async getPosts(page) {
+        async getComments(page) {
             if (typeof page === 'undefined') {
                 page = 1;
             }
@@ -57,15 +57,22 @@ export default {
                     headers: AuthService.authHeader(),
                     body: JSON.stringify(this.form),
                 };
-
-                let response = await fetch('http://127.0.0.1:8000/api/posts', requestOptions);
+                console.log('url', RouteService.getCommentsUrl(this.postId))
+                let response = await fetch(RouteService.getCommentsUrl(this.postId), requestOptions);
                 const responseData = await response.json();
 
+                console.log('responseData', responseData)
+
                 if (response.status === 200) {
-                    this.posts = responseData.data;
+                    this.page = responseData.current_page;
+                    this.comments = responseData.data;
                 }
 
                 if (response.status === 401) {
+                    AuthService.unauthorized(this.$router)
+                }
+
+                if (response.status === 500) {
                     AuthService.unauthorized(this.$router)
                 }
             } catch (error) {

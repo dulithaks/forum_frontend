@@ -40,6 +40,7 @@ class AuthService {
 
     unauthorized(router) {
         localStorage.removeItem('user');
+        toastr.warning('Authorization Required.')
         router.push({name: 'login'})
     }
 }
