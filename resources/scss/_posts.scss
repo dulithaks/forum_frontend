@@ -11,15 +11,6 @@
         background-color: #e3e3e3;
     }
 
-    //
-    //.fs-12 {
-    //    font-size: 12px
-    //}
-    //
-    //.shadow-none {
-    //    box-shadow: none
-    //}
-
     .name {
         font-size: 1rem;
         font-weight: bold;
@@ -35,5 +26,12 @@
 
     .textarea {
         resize: none
+    }
+
+    .avatar {
+        width: auto;
+        height: auto;
+        max-width: 40px;
+        margin-right: 10px;
     }
 }

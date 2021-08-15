@@ -10908,3 +10908,9 @@ textarea.form-control-lg {
 .post-list .textarea {
   resize: none;
 }
+.post-list .avatar {
+  width: auto;
+  height: auto;
+  max-width: 40px;
+  margin-right: 10px;
+}

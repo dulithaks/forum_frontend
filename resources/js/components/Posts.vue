@@ -13,22 +13,22 @@
         <div class="container mt-5">
             <div class="d-flex justify-content-center row">
                 <div class="col-md-8">
-                    <div class="d-flex mt-3 bg-white flex-column comment-section rounded-3 shadow">
+                    <div  v-for="(post, index) in posts"
+                          :key="post.id"
+                          class="post-block d-flex mt-3 bg-white flex-column rounded-3 shadow">
                         <div class="bg-white p-2">
                             <!-- Post -->
                             <div class="d-flex flex-row user-info">
-                                <img class="rounded-circle"
-                                     src="https://i.imgur.com/RpzrMR2.jpg"
-                                     width="40">
+                                <img class="rounded-circle avatar"
+                                     :src="post.user.avatar">
                                 <div class="d-flex flex-column justify-content-start ml-2"><span
-                                    class="d-block font-weight-bold name">Marry Andrews</span><span
-                                    class="date text-black-50">Shared publicly - Jan 2020</span></div>
+                                    class="d-block font-weight-bold name">{{ post.user.full_name }}</span><span
+                                    class="date text-black-50">{{ post.human_date }}</span></div>
                             </div>
-                            <div class="mt-2">
-                                <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat.</p>
+                            <div class="mt-2 ms-5">
+                                <p class="comment-text">
+                                    {{ post.body }}
+                                </p>
                             </div>
 
                             <!-- Comments -->

@@ -23291,7 +23291,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "main-content container bg-light min-vh-100 px-0" },
+    { staticClass: "main-content container bg-light min-vh-100 px-0 shadow" },
     [
       !["login", "register", "notfound"].includes(_vm.$route.name)
         ? _c(
@@ -23595,65 +23595,28 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "post-list" }, [
-      _c(
-        "div",
-        {
-          staticClass:
-            "d-flex justify-content-between text-start pt-4 pb-2 px-2"
-        },
-        [
-          _c("h2", [_vm._v("Posts")]),
-          _vm._v(" "),
-          _c("div", [
-            _c("form", { staticClass: "d-flex" }, [
-              _c("input", {
-                staticClass: "form-control me-2",
-                attrs: {
-                  type: "search",
-                  placeholder: "Search",
-                  "aria-label": "Search"
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-outline-success",
-                  attrs: { type: "submit" }
-                },
-                [_vm._v("Search")]
-              )
-            ])
-          ])
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "container mt-5" }, [
-        _c("div", { staticClass: "d-flex justify-content-center row" }, [
-          _c("div", { staticClass: "col-md-8" }, [
-            _c(
+  return _c("div", { staticClass: "post-list" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "container mt-5" }, [
+      _c("div", { staticClass: "d-flex justify-content-center row" }, [
+        _c(
+          "div",
+          { staticClass: "col-md-8" },
+          _vm._l(_vm.posts, function(post, index) {
+            return _c(
               "div",
               {
+                key: post.id,
                 staticClass:
-                  "d-flex mt-3 bg-white flex-column comment-section rounded-3 shadow"
+                  "post-block d-flex mt-3 bg-white flex-column rounded-3 shadow"
               },
               [
                 _c("div", { staticClass: "bg-white p-2" }, [
                   _c("div", { staticClass: "d-flex flex-row user-info" }, [
                     _c("img", {
-                      staticClass: "rounded-circle",
-                      attrs: {
-                        src: "https://i.imgur.com/RpzrMR2.jpg",
-                        width: "40"
-                      }
+                      staticClass: "rounded-circle avatar",
+                      attrs: { src: post.user.avatar }
                     }),
                     _vm._v(" "),
                     _c(
@@ -23666,166 +23629,182 @@ var staticRenderFns = [
                         _c(
                           "span",
                           { staticClass: "d-block font-weight-bold name" },
-                          [_vm._v("Marry Andrews")]
+                          [_vm._v(_vm._s(post.user.full_name))]
                         ),
                         _c("span", { staticClass: "date text-black-50" }, [
-                          _vm._v("Shared publicly - Jan 2020")
+                          _vm._v(_vm._s(post.human_date))
                         ])
                       ]
                     )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "mt-2" }, [
+                  _c("div", { staticClass: "mt-2 ms-5" }, [
                     _c("p", { staticClass: "comment-text" }, [
                       _vm._v(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do\n                                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n                                consequat."
+                        "\n                                " +
+                          _vm._s(post.body) +
+                          "\n                            "
                       )
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "comment-wrapper" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "d-block mt-3 mx-5 px-4 py-2 rounded-3 comment-block"
-                      },
-                      [
-                        _c(
-                          "div",
-                          { staticClass: "d-flex flex-row user-info" },
-                          [
-                            _c("img", {
-                              staticClass: "rounded-circle",
-                              attrs: {
-                                src: "https://i.imgur.com/RpzrMR2.jpg",
-                                width: "40"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "d-flex flex-column justify-content-start ml-2"
-                              },
-                              [
-                                _c(
-                                  "span",
-                                  {
-                                    staticClass:
-                                      "d-block font-weight-bold text-dark"
-                                  },
-                                  [_vm._v("Marry Andrews")]
-                                ),
-                                _c(
-                                  "span",
-                                  { staticClass: "date text-black-50" },
-                                  [_vm._v("Shared publicly - Jan 2020")]
-                                )
-                              ]
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "mt-2" }, [
-                          _c("p", { staticClass: "comment-text mb-0" }, [
-                            _vm._v(
-                              "Lorem ipsum dolor sit amet, consectetur adipiscing\n                                        elit, sed\n                                        do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad\n                                        minim\n                                        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea\n                                        commodo\n                                        consequat."
-                            )
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "d-block mt-3 mx-5 px-4 py-2 rounded-3 comment-block"
-                      },
-                      [
-                        _c(
-                          "div",
-                          { staticClass: "d-flex flex-row user-info" },
-                          [
-                            _c("img", {
-                              staticClass: "rounded-circle",
-                              attrs: {
-                                src: "https://i.imgur.com/RpzrMR2.jpg",
-                                width: "40"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "d-flex flex-column justify-content-start ml-2"
-                              },
-                              [
-                                _c(
-                                  "span",
-                                  {
-                                    staticClass:
-                                      "d-block font-weight-bold text-dark"
-                                  },
-                                  [_vm._v("Marry Andrews")]
-                                ),
-                                _c(
-                                  "span",
-                                  { staticClass: "date text-black-50" },
-                                  [_vm._v("Shared publicly - Jan 2020")]
-                                )
-                              ]
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "mt-2" }, [
-                          _c("p", { staticClass: "comment-text mb-0" }, [
-                            _vm._v(
-                              "Lorem ipsum dolor sit amet, consectetur adipiscing\n                                        elit, sed\n                                        do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad\n                                        minim\n                                        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea\n                                        commodo\n                                        consequat."
-                            )
-                          ])
-                        ])
-                      ]
-                    )
-                  ])
+                  _vm._m(1, true)
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "bg-white p-2 pt-0" }, [
-                  _c("div", { staticClass: "d-block mx-5" }, [
-                    _c("textarea", {
-                      staticClass: "form-control ml-1 shadow-none textarea"
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "mt-1 mx-5 text-right" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary btn-sm shadow-none",
-                        attrs: { type: "button" }
-                      },
-                      [_vm._v("Comment")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass:
-                          "btn btn-outline-primary btn-sm ml-1 shadow-none",
-                        attrs: { type: "button" }
-                      },
-                      [_vm._v("Cancel\n                            ")]
-                    )
-                  ])
-                ])
+                _vm._m(2, true)
               ]
+            )
+          }),
+          0
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "d-flex justify-content-between text-start pt-4 pb-2 px-2"
+      },
+      [
+        _c("h2", [_vm._v("Posts")]),
+        _vm._v(" "),
+        _c("div", [
+          _c("form", { staticClass: "d-flex" }, [
+            _c("input", {
+              staticClass: "form-control me-2",
+              attrs: {
+                type: "search",
+                placeholder: "Search",
+                "aria-label": "Search"
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-outline-success",
+                attrs: { type: "submit" }
+              },
+              [_vm._v("Search")]
             )
           ])
         ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "comment-wrapper" }, [
+      _c(
+        "div",
+        { staticClass: "d-block mt-3 mx-5 px-4 py-2 rounded-3 comment-block" },
+        [
+          _c("div", { staticClass: "d-flex flex-row user-info" }, [
+            _c("img", {
+              staticClass: "rounded-circle",
+              attrs: { src: "https://i.imgur.com/RpzrMR2.jpg", width: "40" }
+            }),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "d-flex flex-column justify-content-start ml-2" },
+              [
+                _c(
+                  "span",
+                  { staticClass: "d-block font-weight-bold text-dark" },
+                  [_vm._v("Marry Andrews")]
+                ),
+                _c("span", { staticClass: "date text-black-50" }, [
+                  _vm._v("Shared publicly - Jan 2020")
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mt-2" }, [
+            _c("p", { staticClass: "comment-text mb-0" }, [
+              _vm._v(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing\n                                        elit, sed\n                                        do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad\n                                        minim\n                                        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea\n                                        commodo\n                                        consequat."
+              )
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "d-block mt-3 mx-5 px-4 py-2 rounded-3 comment-block" },
+        [
+          _c("div", { staticClass: "d-flex flex-row user-info" }, [
+            _c("img", {
+              staticClass: "rounded-circle",
+              attrs: { src: "https://i.imgur.com/RpzrMR2.jpg", width: "40" }
+            }),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "d-flex flex-column justify-content-start ml-2" },
+              [
+                _c(
+                  "span",
+                  { staticClass: "d-block font-weight-bold text-dark" },
+                  [_vm._v("Marry Andrews")]
+                ),
+                _c("span", { staticClass: "date text-black-50" }, [
+                  _vm._v("Shared publicly - Jan 2020")
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mt-2" }, [
+            _c("p", { staticClass: "comment-text mb-0" }, [
+              _vm._v(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing\n                                        elit, sed\n                                        do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad\n                                        minim\n                                        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea\n                                        commodo\n                                        consequat."
+              )
+            ])
+          ])
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "bg-white p-2 pt-0" }, [
+      _c("div", { staticClass: "d-block mx-5" }, [
+        _c("textarea", {
+          staticClass: "form-control ml-1 shadow-none textarea"
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "mt-1 mx-5 text-right" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary btn-sm shadow-none",
+            attrs: { type: "button" }
+          },
+          [_vm._v("Comment")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-outline-primary btn-sm ml-1 shadow-none",
+            attrs: { type: "button" }
+          },
+          [_vm._v("Cancel\n                            ")]
+        )
       ])
     ])
   }
