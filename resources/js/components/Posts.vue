@@ -10,12 +10,12 @@
             </div>
         </div>
 
-        <div class="container mt-5">
+        <div class="container pb-5">
             <div class="d-flex justify-content-center row">
                 <div class="col-md-8">
                     <div  v-for="(post, index) in posts"
                           :key="post.id"
-                          class="post-block d-flex mt-3 bg-white flex-column rounded-3 shadow">
+                          class="post-block d-flex my-5 bg-white flex-column rounded-3 shadow">
                         <div class="bg-white p-2">
                             <!-- Post -->
                             <div class="d-flex flex-row user-info">
@@ -32,46 +32,7 @@
                             </div>
 
                             <!-- Comments -->
-                            <div class="comment-wrapper">
-                                <div class="d-block mt-3 mx-5 px-4 py-2 rounded-3 comment-block">
-                                    <div class="d-flex flex-row user-info">
-                                        <img class="rounded-circle"
-                                             src="https://i.imgur.com/RpzrMR2.jpg"
-                                             width="40">
-                                        <div class="d-flex flex-column justify-content-start ml-2"><span
-                                            class="d-block font-weight-bold text-dark">Marry Andrews</span><span
-                                            class="date text-black-50">Shared publicly - Jan 2020</span></div>
-                                    </div>
-                                    <div class="mt-2">
-                                        <p class="comment-text mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing
-                                            elit, sed
-                                            do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                                            minim
-                                            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                                            commodo
-                                            consequat.</p>
-                                    </div>
-                                </div>
-                                <div class="d-block mt-3 mx-5 px-4 py-2 rounded-3 comment-block">
-                                    <div class="d-flex flex-row user-info">
-                                        <img class="rounded-circle"
-                                             src="https://i.imgur.com/RpzrMR2.jpg"
-                                             width="40">
-                                        <div class="d-flex flex-column justify-content-start ml-2"><span
-                                            class="d-block font-weight-bold text-dark">Marry Andrews</span><span
-                                            class="date text-black-50">Shared publicly - Jan 2020</span></div>
-                                    </div>
-                                    <div class="mt-2">
-                                        <p class="comment-text mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing
-                                            elit, sed
-                                            do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                                            minim
-                                            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                                            commodo
-                                            consequat.</p>
-                                    </div>
-                                </div>
-                            </div>
+                            <comments :post-id="post.id" :latest-comments="post.latest_comments"></comments>
                         </div>
                         <div class="bg-white p-2 pt-0">
                             <div class="d-block mx-5">
@@ -93,9 +54,12 @@
 
 <script>
 import AuthService from './../services/auth.service'
+import Comments from "./Comments";
 
 export default {
-
+    components: {
+        Comments
+    },
     mounted() {
         console.log('Component mounted.')
     },
