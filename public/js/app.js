@@ -5039,6 +5039,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -23781,7 +23791,7 @@ var render = function() {
                               _c(
                                 "router-link",
                                 {
-                                  staticClass: "nav-link",
+                                  staticClass: "nav-link nav-link-custom",
                                   attrs: { to: "/", href: "#" }
                                 },
                                 [_vm._v("Create")]
@@ -23794,7 +23804,8 @@ var render = function() {
                             _c(
                               "a",
                               {
-                                staticClass: "nav-link dropdown-toggle",
+                                staticClass:
+                                  "nav-link nav-link-custom dropdown-toggle",
                                 attrs: {
                                   href: "#",
                                   id: "navbarDropdown",
@@ -23870,21 +23881,50 @@ var render = function() {
                       ),
                       _vm._v(" "),
                       _c("ul", { staticClass: "nav navbar-nav navbar-right" }, [
-                        _c(
-                          "li",
-                          { staticStyle: { "align-content": "center" } },
-                          [
-                            _c(
-                              "a",
-                              {
-                                staticClass: "text-white text-decoration-none",
-                                attrs: { type: "submit" },
-                                on: { click: _vm.logout }
-                              },
-                              [_vm._v("Logout")]
-                            )
-                          ]
-                        )
+                        _c("li", {
+                          staticStyle: { "align-content": "center" }
+                        }),
+                        _vm._v(" "),
+                        _c("li", { staticClass: "nav-item dropdown" }, [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "nav-link dropdown-toggle",
+                              attrs: {
+                                href: "#",
+                                id: "",
+                                role: "button",
+                                "data-bs-toggle": "dropdown",
+                                "aria-expanded": "false"
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                            Name\n                        "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "ul",
+                            {
+                              staticClass: "dropdown-menu",
+                              attrs: { "aria-labelledby": "navbarDropdown" }
+                            },
+                            [
+                              _c("li", [
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "dropdown-item",
+                                    on: { click: _vm.logout }
+                                  },
+                                  [_vm._v("Logout")]
+                                )
+                              ])
+                            ]
+                          )
+                        ])
                       ])
                     ]
                   )

@@ -13,10 +13,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <router-link to="/" class="nav-link" href="#">Create</router-link>
+                            <router-link to="/" class="nav-link nav-link-custom" href="#">Create</router-link>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link nav-link-custom dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Posts
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -29,8 +29,18 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li style="align-content:center">
-                            <a v-on:click="logout" type="submit"
-                               class="text-white text-decoration-none">Logout</a>
+
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Name
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <a v-on:click="logout"
+                                       class="dropdown-item">Logout</a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
