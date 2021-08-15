@@ -68,42 +68,43 @@ export default {
 
                 if (response.status === 422) {
                     this.errors = responseData.errors || [];
-                    console.log(responseData.errors)
+
+                    console.log(responseData, responseData.errors)
+
+                    if(!responseData.errors && responseData.message) {
+                        toastr.error(responseData.message);
+                    }
                 }
             } catch (error) {
                 toastr.error('Something went wrong. Please try again.', 'Oops!')
             }
         },
         validate(event) {
-            console.log(event);
-            setTimeout(() => {
-                this.formValidator(event.target.name)
-            }, 300);
+            this.formValidator(event.target.name)
         },
         formValidator(name) {
-            let value = this.form[name];
-            console.log(name, value)
+            setTimeout(() => {
+                let value = this.form[name];
+                console.log(name, value)
 
-            if(value) {
-                this.errors[name] = null
-            }
-
-            if (value) {
-                this.errors[name] = null;
-            }
-            else {
-                this.errors[name] = [`The ${name} field is required.`];
-            }
-
-            if (name == 'email') {
                 if(value) {
-                    console.log('email')
-                    this.errors[name] = this.validEmail(value) ? null : ['The email must be a valid email address.'];
+                    this.errors[name] = null
+                }
+
+                if (value) {
+                    this.errors[name] = null;
                 }
                 else {
                     this.errors[name] = [`The ${name} field is required.`];
                 }
-            }
+
+                if (name == 'email' && value) {
+                    console.log(this.validEmail(value), value)
+                    this.errors[name] = this.validEmail(value) ? null : ['The email must be a valid email address.'];
+                    console.log(this.errors[name])
+                    console.log(this.errors)
+                }
+            }, 100);
         },
         validEmail(email) {
             const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

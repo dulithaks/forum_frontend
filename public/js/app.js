@@ -5122,7 +5122,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 12:
                 if (response.status === 422) {
                   _this.errors = responseData.errors || [];
-                  console.log(responseData.errors);
+                  console.log(responseData, responseData.errors);
+
+                  if (!responseData.errors && responseData.message) {
+                    toastr.error(responseData.message);
+                  }
                 }
 
                 _context.next = 18;
@@ -5142,35 +5146,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     validate: function validate(event) {
-      var _this2 = this;
-
-      console.log(event);
-      setTimeout(function () {
-        _this2.formValidator(event.target.name);
-      }, 300);
+      this.formValidator(event.target.name);
     },
     formValidator: function formValidator(name) {
-      var value = this.form[name];
-      console.log(name, value);
+      var _this2 = this;
 
-      if (value) {
-        this.errors[name] = null;
-      }
+      setTimeout(function () {
+        var value = _this2.form[name];
+        console.log(name, value);
 
-      if (value) {
-        this.errors[name] = null;
-      } else {
-        this.errors[name] = ["The ".concat(name, " field is required.")];
-      }
-
-      if (name == 'email') {
         if (value) {
-          console.log('email');
-          this.errors[name] = this.validEmail(value) ? null : ['The email must be a valid email address.'];
-        } else {
-          this.errors[name] = ["The ".concat(name, " field is required.")];
+          _this2.errors[name] = null;
         }
-      }
+
+        if (value) {
+          _this2.errors[name] = null;
+        } else {
+          _this2.errors[name] = ["The ".concat(name, " field is required.")];
+        }
+
+        if (name == 'email' && value) {
+          console.log(_this2.validEmail(value), value);
+          _this2.errors[name] = _this2.validEmail(value) ? null : ['The email must be a valid email address.'];
+          console.log(_this2.errors[name]);
+          console.log(_this2.errors);
+        }
+      }, 100);
     },
     validEmail: function validEmail(email) {
       var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
