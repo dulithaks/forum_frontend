@@ -73,7 +73,7 @@ export default {
                 }
 
                 if (response.status === 500) {
-                    AuthService.unauthorized(this.$router)
+                    toastr.error('Something went wrong. Please try again.', 'Oops!')
                 }
             } catch (error) {
                 console.log(error)

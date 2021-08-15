@@ -2,7 +2,7 @@ class RouteService {
     static baseUrl = "http://127.0.0.1:8000/api/";
 
     createCommentUrl(postId) {
-        return RouteService.baseUrl + `posts/${postId}/comments/create`
+        return RouteService.baseUrl + `posts/${postId}/comments`
     }
 
     getCommentsUrl(postId) {
@@ -18,6 +18,9 @@ class RouteService {
         return url;
     }
 
+    getCreatePostUrl() {
+        return RouteService.baseUrl + `posts`
+    }
 }
 
 export default new RouteService();

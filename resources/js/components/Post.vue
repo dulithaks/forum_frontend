@@ -20,10 +20,14 @@
         </div>
         <div class="bg-white p-2 pt-0">
             <div class="d-block mx-5">
-                <textarea v-model="form.body" class="form-control ml-1 shadow-none textarea"></textarea>
+                <textarea v-model="form.body"
+                          v-on:keydown="validate('body')"
+                          v-on:change="validate('body')"
+                          class="form-control ml-1 shadow-none textarea"></textarea>
+                <span v-if="errors.body" class="validation-errors">{{ errors.body[0] }}</span>
             </div>
             <div class="mt-1 mx-5 text-right">
-                <button v-on:click.prevent="saveComment" class="btn btn-dark" type="button">Comment</button>
+                <button v-on:click.prevent="create" class="btn btn-dark" type="button">Comment</button>
                 <button v-on:click.prevent="cancel" class="btn btn-outline-dark ms-1" type="button">Cancel
                 </button>
             </div>
@@ -50,37 +54,56 @@ export default {
                 body: '',
                 post_id: null,
             },
+            errors: [],
         }
     },
     methods: {
-        async saveComment() {
+        async create() {
             try {
+                
+
                 const requestOptions = {
                     method: 'POST',
                     headers: AuthService.authHeader(),
                     body: JSON.stringify(this.form),
                 };
 
-                let response = await fetch(RouteService.createCommentUrl(this.post.id), requestOptions);
+                let response = await fetch(RouteService.getCommentsUrl(this.form.post_id), requestOptions);
                 const responseData = await response.json();
 
                 if (response.status === 200) {
+                    this.form.body = '';
+                    this.errors = [];
                     await this.$refs.comments.getComments(1);
                     return toastr.success('Thanks for your comment.');
                 }
 
                 if (response.status === 422) {
-                    return toastr.error('Please check your input.');
-                }
+                    this.errors = responseData.errors || [];
 
-                if (response.status === 401) {
-                    return await AuthService.unauthorized(this.$router, response.status)
-                }
+                    console.log(responseData, responseData.errors)
 
-                toastr.error('Oops... Something went wrong!');
+                    if(!responseData.errors && responseData.message) {
+                        toastr.error(responseData.message);
+                    }
+                }
             } catch (error) {
+                console.log(error)
                 toastr.error('Something went wrong. Please try again.', 'Oops!')
             }
+        },
+        validate(name) {
+            setTimeout(() => {
+                let value = this.form[name];
+                console.log(name, value)
+
+                if (value) {
+                    this.errors[name] = null;
+                }
+                else {
+                    this.errors[name] = [`The ${name} field is required.`];
+                }
+            }, 100);
         },
         cancel () {
             this.form.body = '';
