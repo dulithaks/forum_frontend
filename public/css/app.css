@@ -10885,3 +10885,26 @@ textarea.form-control-lg {
   font-size: 0.875em;
   color: #dc3545;
 }
+
+.post-list .date {
+  font-size: 11px;
+}
+.post-list .comment-text {
+  font-size: 0.9rem;
+}
+.post-list .comment-block {
+  background-color: #e3e3e3;
+}
+.post-list .name {
+  font-size: 1rem;
+  font-weight: bold;
+}
+.post-list .cursor:hover {
+  color: blue;
+}
+.post-list .cursor {
+  cursor: pointer;
+}
+.post-list .textarea {
+  resize: none;
+}

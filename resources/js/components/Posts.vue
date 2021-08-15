@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="post-list">
         <div class="d-flex justify-content-between text-start pt-4 pb-2 px-2">
             <h2>Posts</h2>
             <div>
@@ -10,52 +10,130 @@
             </div>
         </div>
 
-        <div class="accordion" id="accordionExample">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Accordion Item #1
-                    </button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Accordion Item #2
-                    </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingThree">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        Accordion Item #3
-                    </button>
-                </h2>
-                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+        <div class="container mt-5">
+            <div class="d-flex justify-content-center row">
+                <div class="col-md-8">
+                    <div class="d-flex mt-3 bg-white flex-column comment-section rounded-3 shadow">
+                        <div class="bg-white p-2">
+                            <!-- Post -->
+                            <div class="d-flex flex-row user-info">
+                                <img class="rounded-circle"
+                                     src="https://i.imgur.com/RpzrMR2.jpg"
+                                     width="40">
+                                <div class="d-flex flex-column justify-content-start ml-2"><span
+                                    class="d-block font-weight-bold name">Marry Andrews</span><span
+                                    class="date text-black-50">Shared publicly - Jan 2020</span></div>
+                            </div>
+                            <div class="mt-2">
+                                <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                    consequat.</p>
+                            </div>
+
+                            <!-- Comments -->
+                            <div class="comment-wrapper">
+                                <div class="d-block mt-3 mx-5 px-4 py-2 rounded-3 comment-block">
+                                    <div class="d-flex flex-row user-info">
+                                        <img class="rounded-circle"
+                                             src="https://i.imgur.com/RpzrMR2.jpg"
+                                             width="40">
+                                        <div class="d-flex flex-column justify-content-start ml-2"><span
+                                            class="d-block font-weight-bold text-dark">Marry Andrews</span><span
+                                            class="date text-black-50">Shared publicly - Jan 2020</span></div>
+                                    </div>
+                                    <div class="mt-2">
+                                        <p class="comment-text mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                            elit, sed
+                                            do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                                            minim
+                                            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                                            commodo
+                                            consequat.</p>
+                                    </div>
+                                </div>
+                                <div class="d-block mt-3 mx-5 px-4 py-2 rounded-3 comment-block">
+                                    <div class="d-flex flex-row user-info">
+                                        <img class="rounded-circle"
+                                             src="https://i.imgur.com/RpzrMR2.jpg"
+                                             width="40">
+                                        <div class="d-flex flex-column justify-content-start ml-2"><span
+                                            class="d-block font-weight-bold text-dark">Marry Andrews</span><span
+                                            class="date text-black-50">Shared publicly - Jan 2020</span></div>
+                                    </div>
+                                    <div class="mt-2">
+                                        <p class="comment-text mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                            elit, sed
+                                            do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                                            minim
+                                            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                                            commodo
+                                            consequat.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-2 pt-0">
+                            <div class="d-block mx-5">
+                                <textarea class="form-control ml-1 shadow-none textarea"></textarea>
+                            </div>
+                            <div class="mt-1 mx-5 text-right">
+                                <button class="btn btn-primary btn-sm shadow-none" type="button">Comment</button>
+                                <button class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button">Cancel
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 
 <script>
+import AuthService from './../services/auth.service'
+
 export default {
+
+    mounted() {
+        console.log('Component mounted.')
+    },
     data() {
         return {
-            books: []
+            posts: [],
+        }
+    },
+    created() {
+        this.getPosts();
+    },
+    methods: {
+        async getPosts(page) {
+            if (typeof page === 'undefined') {
+                page = 1;
+            }
+
+            try {
+                const requestOptions = {
+                    method: 'GET',
+                    headers: AuthService.authHeader(),
+                    body: JSON.stringify(this.form),
+                };
+
+                let response = await fetch('http://127.0.0.1:8000/api/posts', requestOptions);
+                const responseData = await response.json();
+
+                if (response.status === 200) {
+                    this.posts = responseData.data;
+                }
+
+                if (response.status === 401) {
+                    AuthService.unauthorized(this.$router)
+                }
+            } catch (error) {
+                console.log(error)
+                toastr.error('Something went wrong. Please try again.', 'Oops!')
+            }
         }
     }
 }

@@ -9,20 +9,38 @@ class AuthService {
         }
     }
 
-    logout() {
-        console.log('logout')
-        //localStorage.removeItem('user');
+    logout(router) {
+        localStorage.removeItem('user');
+        router.push({name: 'login'})
     }
 
-    header() {
+    authHeader() {
         let user = JSON.parse(localStorage.getItem('user'));
-
         if (user && user.api_token) {
             console.log(user.api_token)
-            return { Authorization: 'Bearer ' + user.api_token };
+
+            return {
+                'Accept': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + user.api_token
+            }
         } else {
             return {};
         }
+    }
+
+    guestHeader() {
+        return {
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json',
+        }
+    }
+
+    unauthorized(router) {
+        localStorage.removeItem('user');
+        router.push({name: 'login'})
     }
 }
 

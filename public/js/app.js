@@ -5044,13 +5044,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _services_auth_service__WEBPACK_IMPORTED_MODULE_1__.default.logout();
-                _context.next = 3;
-                return _this.$router.push({
-                  name: 'login'
-                });
+                _services_auth_service__WEBPACK_IMPORTED_MODULE_1__.default.logout(_this.$router);
 
-              case 3:
+              case 1:
               case "end":
                 return _context.stop();
             }
@@ -5263,6 +5259,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../services/auth.service */ "./resources/js/services/auth.service.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -5316,11 +5321,115 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mounted: function mounted() {
+    console.log('Component mounted.');
+  },
   data: function data() {
     return {
-      books: []
+      posts: []
     };
+  },
+  created: function created() {
+    this.getPosts();
+  },
+  methods: {
+    getPosts: function getPosts(page) {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var requestOptions, response, responseData;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (typeof page === 'undefined') {
+                  page = 1;
+                }
+
+                _context.prev = 1;
+                requestOptions = {
+                  method: 'GET',
+                  headers: _services_auth_service__WEBPACK_IMPORTED_MODULE_1__.default.authHeader(),
+                  body: JSON.stringify(_this.form)
+                };
+                _context.next = 5;
+                return fetch('http://127.0.0.1:8000/api/posts', requestOptions);
+
+              case 5:
+                response = _context.sent;
+                _context.next = 8;
+                return response.json();
+
+              case 8:
+                responseData = _context.sent;
+
+                if (response.status === 200) {
+                  _this.posts = responseData.data;
+                }
+
+                if (response.status === 401) {
+                  _services_auth_service__WEBPACK_IMPORTED_MODULE_1__.default.unauthorized(_this.$router);
+                }
+
+                _context.next = 17;
+                break;
+
+              case 13:
+                _context.prev = 13;
+                _context.t0 = _context["catch"](1);
+                console.log(_context.t0);
+                toastr.error('Something went wrong. Please try again.', 'Oops!');
+
+              case 17:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[1, 13]]);
+      }))();
+    }
   }
 });
 
@@ -5486,22 +5595,45 @@ var AuthService = /*#__PURE__*/function () {
     }
   }, {
     key: "logout",
-    value: function logout() {
-      console.log('logout'); //localStorage.removeItem('user');
+    value: function logout(router) {
+      localStorage.removeItem('user');
+      router.push({
+        name: 'login'
+      });
     }
   }, {
-    key: "header",
-    value: function header() {
+    key: "authHeader",
+    value: function authHeader() {
       var user = JSON.parse(localStorage.getItem('user'));
 
       if (user && user.api_token) {
         console.log(user.api_token);
         return {
-          Authorization: 'Bearer ' + user.api_token
+          'Accept': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + user.api_token
         };
       } else {
         return {};
       }
+    }
+  }, {
+    key: "guestHeader",
+    value: function guestHeader() {
+      return {
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+      };
+    }
+  }, {
+    key: "unauthorized",
+    value: function unauthorized(router) {
+      localStorage.removeItem('user');
+      router.push({
+        name: 'login'
+      });
     }
   }]);
 
@@ -23159,7 +23291,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "main-content container bg-light vh-100 px-0" },
+    { staticClass: "main-content container bg-light min-vh-100 px-0" },
     [
       !["login", "register", "notfound"].includes(_vm.$route.name)
         ? _c(
@@ -23470,7 +23602,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
+    return _c("div", { staticClass: "post-list" }, [
       _c(
         "div",
         {
@@ -23504,173 +23636,197 @@ var staticRenderFns = [
         ]
       ),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "accordion", attrs: { id: "accordionExample" } },
-        [
-          _c("div", { staticClass: "accordion-item" }, [
-            _c(
-              "h2",
-              { staticClass: "accordion-header", attrs: { id: "headingOne" } },
-              [
-                _c(
-                  "button",
-                  {
-                    staticClass: "accordion-button",
-                    attrs: {
-                      type: "button",
-                      "data-bs-toggle": "collapse",
-                      "data-bs-target": "#collapseOne",
-                      "aria-expanded": "true",
-                      "aria-controls": "collapseOne"
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                    Accordion Item #1\n                "
-                    )
-                  ]
-                )
-              ]
-            ),
-            _vm._v(" "),
+      _c("div", { staticClass: "container mt-5" }, [
+        _c("div", { staticClass: "d-flex justify-content-center row" }, [
+          _c("div", { staticClass: "col-md-8" }, [
             _c(
               "div",
               {
-                staticClass: "accordion-collapse collapse show",
-                attrs: {
-                  id: "collapseOne",
-                  "aria-labelledby": "headingOne",
-                  "data-bs-parent": "#accordionExample"
-                }
+                staticClass:
+                  "d-flex mt-3 bg-white flex-column comment-section rounded-3 shadow"
               },
               [
-                _c("div", { staticClass: "accordion-body" }, [
-                  _c("strong", [
-                    _vm._v("This is the first item's accordion body.")
-                  ]),
-                  _vm._v(
-                    " It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the "
-                  ),
-                  _c("code", [_vm._v(".accordion-body")]),
-                  _vm._v(
-                    ", though the transition does limit overflow.\n                "
-                  )
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "accordion-item" }, [
-            _c(
-              "h2",
-              { staticClass: "accordion-header", attrs: { id: "headingTwo" } },
-              [
-                _c(
-                  "button",
-                  {
-                    staticClass: "accordion-button collapsed",
-                    attrs: {
-                      type: "button",
-                      "data-bs-toggle": "collapse",
-                      "data-bs-target": "#collapseTwo",
-                      "aria-expanded": "false",
-                      "aria-controls": "collapseTwo"
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                    Accordion Item #2\n                "
+                _c("div", { staticClass: "bg-white p-2" }, [
+                  _c("div", { staticClass: "d-flex flex-row user-info" }, [
+                    _c("img", {
+                      staticClass: "rounded-circle",
+                      attrs: {
+                        src: "https://i.imgur.com/RpzrMR2.jpg",
+                        width: "40"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "d-flex flex-column justify-content-start ml-2"
+                      },
+                      [
+                        _c(
+                          "span",
+                          { staticClass: "d-block font-weight-bold name" },
+                          [_vm._v("Marry Andrews")]
+                        ),
+                        _c("span", { staticClass: "date text-black-50" }, [
+                          _vm._v("Shared publicly - Jan 2020")
+                        ])
+                      ]
                     )
-                  ]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "accordion-collapse collapse",
-                attrs: {
-                  id: "collapseTwo",
-                  "aria-labelledby": "headingTwo",
-                  "data-bs-parent": "#accordionExample"
-                }
-              },
-              [
-                _c("div", { staticClass: "accordion-body" }, [
-                  _c("strong", [
-                    _vm._v("This is the second item's accordion body.")
                   ]),
-                  _vm._v(
-                    " It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the "
-                  ),
-                  _c("code", [_vm._v(".accordion-body")]),
-                  _vm._v(
-                    ", though the transition does limit overflow.\n                "
-                  )
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "accordion-item" }, [
-            _c(
-              "h2",
-              {
-                staticClass: "accordion-header",
-                attrs: { id: "headingThree" }
-              },
-              [
-                _c(
-                  "button",
-                  {
-                    staticClass: "accordion-button collapsed",
-                    attrs: {
-                      type: "button",
-                      "data-bs-toggle": "collapse",
-                      "data-bs-target": "#collapseThree",
-                      "aria-expanded": "false",
-                      "aria-controls": "collapseThree"
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                    Accordion Item #3\n                "
+                  _vm._v(" "),
+                  _c("div", { staticClass: "mt-2" }, [
+                    _c("p", { staticClass: "comment-text" }, [
+                      _vm._v(
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do\n                                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n                                consequat."
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "comment-wrapper" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "d-block mt-3 mx-5 px-4 py-2 rounded-3 comment-block"
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "d-flex flex-row user-info" },
+                          [
+                            _c("img", {
+                              staticClass: "rounded-circle",
+                              attrs: {
+                                src: "https://i.imgur.com/RpzrMR2.jpg",
+                                width: "40"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "d-flex flex-column justify-content-start ml-2"
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  {
+                                    staticClass:
+                                      "d-block font-weight-bold text-dark"
+                                  },
+                                  [_vm._v("Marry Andrews")]
+                                ),
+                                _c(
+                                  "span",
+                                  { staticClass: "date text-black-50" },
+                                  [_vm._v("Shared publicly - Jan 2020")]
+                                )
+                              ]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "mt-2" }, [
+                          _c("p", { staticClass: "comment-text mb-0" }, [
+                            _vm._v(
+                              "Lorem ipsum dolor sit amet, consectetur adipiscing\n                                        elit, sed\n                                        do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad\n                                        minim\n                                        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea\n                                        commodo\n                                        consequat."
+                            )
+                          ])
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "d-block mt-3 mx-5 px-4 py-2 rounded-3 comment-block"
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "d-flex flex-row user-info" },
+                          [
+                            _c("img", {
+                              staticClass: "rounded-circle",
+                              attrs: {
+                                src: "https://i.imgur.com/RpzrMR2.jpg",
+                                width: "40"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "d-flex flex-column justify-content-start ml-2"
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  {
+                                    staticClass:
+                                      "d-block font-weight-bold text-dark"
+                                  },
+                                  [_vm._v("Marry Andrews")]
+                                ),
+                                _c(
+                                  "span",
+                                  { staticClass: "date text-black-50" },
+                                  [_vm._v("Shared publicly - Jan 2020")]
+                                )
+                              ]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "mt-2" }, [
+                          _c("p", { staticClass: "comment-text mb-0" }, [
+                            _vm._v(
+                              "Lorem ipsum dolor sit amet, consectetur adipiscing\n                                        elit, sed\n                                        do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad\n                                        minim\n                                        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea\n                                        commodo\n                                        consequat."
+                            )
+                          ])
+                        ])
+                      ]
                     )
-                  ]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "accordion-collapse collapse",
-                attrs: {
-                  id: "collapseThree",
-                  "aria-labelledby": "headingThree",
-                  "data-bs-parent": "#accordionExample"
-                }
-              },
-              [
-                _c("div", { staticClass: "accordion-body" }, [
-                  _c("strong", [
-                    _vm._v("This is the third item's accordion body.")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "bg-white p-2 pt-0" }, [
+                  _c("div", { staticClass: "d-block mx-5" }, [
+                    _c("textarea", {
+                      staticClass: "form-control ml-1 shadow-none textarea"
+                    })
                   ]),
-                  _vm._v(
-                    " It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the "
-                  ),
-                  _c("code", [_vm._v(".accordion-body")]),
-                  _vm._v(
-                    ", though the transition does limit overflow.\n                "
-                  )
+                  _vm._v(" "),
+                  _c("div", { staticClass: "mt-1 mx-5 text-right" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary btn-sm shadow-none",
+                        attrs: { type: "button" }
+                      },
+                      [_vm._v("Comment")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "btn btn-outline-primary btn-sm ml-1 shadow-none",
+                        attrs: { type: "button" }
+                      },
+                      [_vm._v("Cancel\n                            ")]
+                    )
+                  ])
                 ])
               ]
             )
           ])
-        ]
-      )
+        ])
+      ])
     ])
   }
 ]

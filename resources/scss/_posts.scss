@@ -1,0 +1,39 @@
+.post-list {
+    .date {
+        font-size: 11px
+    }
+
+    .comment-text {
+        font-size: 0.9rem;
+    }
+
+    .comment-block {
+        background-color: #e3e3e3;
+    }
+
+    //
+    //.fs-12 {
+    //    font-size: 12px
+    //}
+    //
+    //.shadow-none {
+    //    box-shadow: none
+    //}
+
+    .name {
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    .cursor:hover {
+        color: blue
+    }
+
+    .cursor {
+        cursor: pointer
+    }
+
+    .textarea {
+        resize: none
+    }
+}

@@ -1,6 +1,6 @@
 <template>
 
-    <div class="main-content container bg-light vh-100 px-0">
+    <div class="main-content container bg-light min-vh-100 px-0">
         <nav v-if="!['login', 'register', 'notfound'].includes($route.name)" class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
                 <router-link to="/" class="navbar-brand" href="#">Forum</router-link>
@@ -43,8 +43,7 @@ export default {
     },
     methods: {
         async logout () {
-            AuthService.logout();
-            await this.$router.push({ name: 'login' })
+            AuthService.logout(this.$router);
         }
     }
 }
