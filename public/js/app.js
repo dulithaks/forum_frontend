@@ -5164,9 +5164,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.page = this.latestComments.current_page;
     this.comments = this.latestComments.data;
   },
-  created: function created() {// console.log('Component created.')
-    // console.log(this.comments)
-  },
   methods: {
     getComments: function getComments(page) {
       var _this = this;
@@ -5853,6 +5850,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
 /* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../services/auth.service */ "./resources/js/services/auth.service.js");
 /* harmony import */ var _services_route_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../services/route.service */ "./resources/js/services/route.service.js");
 
@@ -5894,7 +5892,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5905,6 +5903,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       },
       errors: []
     };
+  },
+  validations: {
+    form: {
+      body: {
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_3__.required,
+        minLength: (0,vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_3__.minLength)(10)
+      }
+    }
   },
   methods: {
     create: function create() {
@@ -5917,75 +5923,95 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
+
+                _this.$v.$touch();
+
+                if (!_this.$v.$invalid) {
+                  _context.next = 4;
+                  break;
+                }
+
+                return _context.abrupt("return", toastr.error('Please enter post content.'));
+
+              case 4:
                 requestOptions = {
                   method: 'POST',
                   headers: _services_auth_service__WEBPACK_IMPORTED_MODULE_1__.default.authHeader(),
                   body: JSON.stringify(_this.form)
                 };
-                _context.next = 4;
+                _context.next = 7;
                 return fetch(_services_route_service__WEBPACK_IMPORTED_MODULE_2__.default.getCreatePostUrl(), requestOptions);
 
-              case 4:
+              case 7:
                 response = _context.sent;
-                _context.next = 7;
+                _context.next = 10;
                 return response.json();
 
-              case 7:
+              case 10:
                 responseData = _context.sent;
 
                 if (!(response.status === 200)) {
-                  _context.next = 12;
+                  _context.next = 15;
                   break;
                 }
 
                 console.log(responseData);
-                _context.next = 12;
+                _context.next = 15;
                 return _this.$router.push('/');
 
-              case 12:
+              case 15:
                 if (response.status === 422) {
-                  _this.errors = responseData.errors || [];
-                  console.log(responseData, responseData.errors);
+                  _this.formatServerValidationErrors(responseData.errors);
 
-                  if (!responseData.errors && responseData.message) {
-                    toastr.error(responseData.message);
-                  }
+                  responseData.message ? toastr.error(responseData.message) : '';
                 }
 
-                _context.next = 19;
+                if (response.status === 500) {
+                  responseData.message ? toastr.error(responseData.message) : '';
+                }
+
+                _context.next = 23;
                 break;
 
-              case 15:
-                _context.prev = 15;
+              case 19:
+                _context.prev = 19;
                 _context.t0 = _context["catch"](0);
                 console.log(_context.t0);
                 toastr.error('Something went wrong. Please try again.', 'Oops!');
 
-              case 19:
+              case 23:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 15]]);
+        }, _callee, null, [[0, 19]]);
       }))();
     },
-    validate: function validate(name) {
-      var _this2 = this;
+    validateForm: function validateForm(event) {
+      this.$v.form[event.target.name].$touch();
+      this.addValidationErrors(event.target.name);
+    },
+    addValidationErrors: function addValidationErrors(field) {
+      console.log(field, this.$v.form[field].required, this.$v.form[field].$dirty, this.$v.form[field].$error);
 
-      setTimeout(function () {
-        var value = _this2.form[name];
-        console.log(name, value);
+      if (!this.$v.form[field].$error) {
+        return this.errors[field] = '';
+      }
 
-        if (value) {
-          _this2.errors[name] = null;
-        }
+      if (!this.$v.form[field].required && this.$v.form[field].$dirty) {
+        this.errors[field] = "The ".concat(field.replace('_', ' '), " field is required.");
+      }
 
-        if (value) {
-          _this2.errors[name] = null;
-        } else {
-          _this2.errors[name] = ["The ".concat(name, " field is required.")];
-        }
-      }, 100);
+      if (!this.$v.form[field].minLength && this.$v.form[field].$dirty) {
+        this.errors[field] = "The ".concat(field.replace('_', ' '), " must be at least 10 characters.");
+      }
+    },
+    formatServerValidationErrors: function formatServerValidationErrors(errors) {
+      errors = errors || {};
+      Object.keys(errors).map(function (key, index) {
+        errors[key] = errors[key][0];
+      });
+      this.errors = errors;
     }
   }
 });
@@ -6184,6 +6210,16 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -25023,16 +25059,20 @@ var render = function() {
                               attrs: { "aria-labelledby": "navbarDropdown" }
                             },
                             [
-                              _c("li", [
-                                _c(
-                                  "a",
-                                  {
-                                    staticClass: "dropdown-item",
-                                    on: { click: _vm.logout }
-                                  },
-                                  [_vm._v("Logout")]
-                                )
-                              ])
+                              _c(
+                                "li",
+                                { staticClass: "navbar-right__nav-link" },
+                                [
+                                  _c(
+                                    "a",
+                                    {
+                                      staticClass: "dropdown-item",
+                                      on: { click: _vm.logout }
+                                    },
+                                    [_vm._v("Logout")]
+                                  )
+                                ]
+                              )
                             ]
                           )
                         ])
@@ -25648,24 +25688,21 @@ var render = function() {
               },
               domProps: { value: _vm.form.body },
               on: {
-                keydown: function($event) {
-                  return _vm.validate("body")
-                },
-                change: function($event) {
-                  return _vm.validate("body")
-                },
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.form, "body", $event.target.value)
-                }
+                input: [
+                  function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "body", $event.target.value)
+                  },
+                  _vm.validateForm
+                ]
               }
             }),
             _vm._v(" "),
             _vm.errors.body
               ? _c("span", { staticClass: "validation-errors" }, [
-                  _vm._v(_vm._s(_vm.errors.body[0]))
+                  _vm._v(_vm._s(_vm.errors.body))
                 ])
               : _vm._e()
           ]),
@@ -26040,7 +26077,24 @@ var render = function() {
         },
         [_vm._v("Register")]
       )
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "mb-3 text-center" },
+      [
+        _c(
+          "router-link",
+          {
+            staticClass: "ps-2 text-decoration-none fst-italic",
+            staticStyle: { "margin-top": "-1px" },
+            attrs: { to: "/login", href: "#" }
+          },
+          [_vm._v("Login\n        ")]
+        )
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = [

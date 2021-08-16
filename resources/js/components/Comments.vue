@@ -40,11 +40,6 @@ export default {
         this.page = this.latestComments.current_page;
         this.comments = this.latestComments.data;
     },
-
-    created() {
-        // console.log('Component created.')
-        // console.log(this.comments)
-    },
     methods: {
         async getComments(page) {
             if (typeof page === 'undefined') {

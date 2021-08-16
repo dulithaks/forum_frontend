@@ -10901,6 +10901,10 @@ textarea.form-control-lg {
   text-transform: uppercase;
 }
 
+.navbar-right .navbar-right__nav-link {
+  cursor: pointer;
+}
+
 .post-list .date {
   font-size: 11px;
 }

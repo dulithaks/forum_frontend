@@ -47,7 +47,7 @@
                                 {{ userFirstName }}
                             </a>
                             <ul class="dropdown-menu navbar-user" aria-labelledby="navbarDropdown">
-                                <li>
+                                <li class="navbar-right__nav-link">
                                     <a v-on:click="logout"
                                        class="dropdown-item">Logout</a>
                                 </li>

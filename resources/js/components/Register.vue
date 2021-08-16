@@ -57,6 +57,16 @@
         <div class="mb-3 text-center">
             <button v-on:click.prevent="register" type="button" class="btn btn-dark w-50">Register</button>
         </div>
+
+        <div class="mb-3 text-center">
+            <router-link to="/login"
+                         href="#"
+                         class="ps-2 text-decoration-none fst-italic"
+                         style="margin-top: -1px"
+            >Login
+            </router-link>
+        </div>
+
     </div>
 </template>
 
