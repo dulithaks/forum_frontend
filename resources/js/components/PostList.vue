@@ -8,7 +8,7 @@
                     <div class="d-flex">
                         <input v-model="form.term" class="form-control me-2" type="search" placeholder="Search"
                                aria-label="Search">
-                        <button v-on:click="getPosts(1)" class="btn btn-outline-dark" type="submit">Search</button>
+                        <button v-on:click="getPosts()" class="btn btn-outline-dark" type="submit">Search</button>
 
                     </div>
                 </div>
@@ -20,6 +20,10 @@
                     </div>
                     <div v-if="noResultFound" class="fs-5 fw-normal">
                         No result found.
+                    </div>
+
+                    <div v-if="page < lastPage" class="d-flex">
+                        <button v-on:click="nextPage()" class="btn btn-outline-dark mx-auto">More</button>
                     </div>
                 </div>
             </div>
@@ -45,9 +49,13 @@ export default {
     },
     mounted() {
         this.form.term = null;
+        this.page = 1;
+        this.getPosts();
     },
     data() {
         return {
+            page: 1,
+            lastPage: 1,
             posts: [],
             form: {
                 term: null,
@@ -55,20 +63,15 @@ export default {
             noResultFound: false,
         }
     },
-    created() {
-        this.getPosts();
-    },
     methods: {
-        async getPosts(page) {
-            page = typeof page === 'undefined' ? 1 : page;
-
+        async getPosts() {
             try {
-                let resourceUrl = RouteService.getPostsUrl(this.form);
+                let resourceUrl = RouteService.getPostsUrl(this.form, this.page);
 
                 if (this.filter && this.filter == 'my-posts') {
-                    resourceUrl = RouteService.getMyPostsUrl(this.form, AuthService.user());
+                    resourceUrl = RouteService.getMyPostsUrl(this.form, AuthService.user(), this.page);
                 } else if (this.filter && this.filter == 'pending-posts') {
-                    resourceUrl = RouteService.getPendingPostsUrl(this.form, this.filter);
+                    resourceUrl = RouteService.getPendingPostsUrl(this.form, this.filter, this.page);
                 }
 
                 const requestOptions = {
@@ -76,23 +79,30 @@ export default {
                     headers: AuthService.authHeader(),
                 };
 
+                console.log(this.posts)
                 console.log(resourceUrl);
 
                 let response = await fetch(resourceUrl, requestOptions);
                 const responseData = await response.json();
 
                 if (response.status === 200) {
-                    this.posts = responseData.data;
-                    this.noResultFound = this.posts.length == 0 ? true : false;
+                    let posts = responseData.data;
+                    this.page = posts.current_page;
+                    this.lastPage = posts.last_page;
+                    this.posts = this.posts.concat(posts.data);
+                    console.log(this.posts.length)
                 }
 
                 if (response.status === 401) {
                     AuthService.unauthorized(this.$router)
                 }
             } catch (error) {
-                console.log(error)
                 toastr.error('Something went wrong. Please try again.', 'Oops!')
             }
+        },
+        nextPage() {
+            this.page++;
+            this.getPosts();
         }
     }
 }

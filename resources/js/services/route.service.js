@@ -13,25 +13,17 @@ class RouteService {
         return RouteService.baseUrl + `posts/${postId}/comments`
     }
 
-    getPostsUrl(form) {
-        let url = RouteService.baseUrl + 'posts';
-        if(form.term) {
-            url +=  '?term=' + form.term.trim();
-        }
-
-        return url;
+    getPostsUrl(form, page) {
+        let url = RouteService.baseUrl + 'posts?page=' + page;
+        return  url += form.term ? '&term=' + form.term.trim() : '';
     }
 
-    getMyPostsUrl(form, user) {
-        let url = RouteService.baseUrl + 'posts?userId=' + user.id;
-        url +=  form.term ? '&term=' + form.term.trim() : '';
-        return url;
+    getMyPostsUrl(form, user, page) {
+        return this.getPostsUrl(form, page) + '&userId=' + user.id;
     }
 
-    getPendingPostsUrl(form, filter) {
-        let url = RouteService.baseUrl + 'posts?filter=' + filter;
-        url +=  form.term ? '&term=' + form.term.trim() : '';
-        return url;
+    getPendingPostsUrl(form, filter, page) {
+        return this.getPostsUrl(form, page) + '&filter=' + filter;
     }
 
     getCreatePostUrl() {

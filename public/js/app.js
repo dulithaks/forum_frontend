@@ -6071,6 +6071,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -6083,9 +6087,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   mounted: function mounted() {
     this.form.term = null;
+    this.page = 1;
+    this.getPosts();
   },
   data: function data() {
     return {
+      page: 1,
+      lastPage: 1,
       posts: [],
       form: {
         term: null
@@ -6093,33 +6101,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       noResultFound: false
     };
   },
-  created: function created() {
-    this.getPosts();
-  },
   methods: {
-    getPosts: function getPosts(page) {
+    getPosts: function getPosts() {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var resourceUrl, requestOptions, response, responseData;
+        var resourceUrl, requestOptions, response, responseData, posts;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                page = typeof page === 'undefined' ? 1 : page;
-                _context.prev = 1;
-                resourceUrl = _services_route_service__WEBPACK_IMPORTED_MODULE_2__.default.getPostsUrl(_this.form);
+                _context.prev = 0;
+                resourceUrl = _services_route_service__WEBPACK_IMPORTED_MODULE_2__.default.getPostsUrl(_this.form, _this.page);
 
                 if (_this.filter && _this.filter == 'my-posts') {
-                  resourceUrl = _services_route_service__WEBPACK_IMPORTED_MODULE_2__.default.getMyPostsUrl(_this.form, _services_auth_service__WEBPACK_IMPORTED_MODULE_1__.default.user());
+                  resourceUrl = _services_route_service__WEBPACK_IMPORTED_MODULE_2__.default.getMyPostsUrl(_this.form, _services_auth_service__WEBPACK_IMPORTED_MODULE_1__.default.user(), _this.page);
                 } else if (_this.filter && _this.filter == 'pending-posts') {
-                  resourceUrl = _services_route_service__WEBPACK_IMPORTED_MODULE_2__.default.getPendingPostsUrl(_this.form, _this.filter);
+                  resourceUrl = _services_route_service__WEBPACK_IMPORTED_MODULE_2__.default.getPendingPostsUrl(_this.form, _this.filter, _this.page);
                 }
 
                 requestOptions = {
                   method: 'GET',
                   headers: _services_auth_service__WEBPACK_IMPORTED_MODULE_1__.default.authHeader()
                 };
+                console.log(_this.posts);
                 console.log(resourceUrl);
                 _context.next = 8;
                 return fetch(resourceUrl, requestOptions);
@@ -6133,30 +6138,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 responseData = _context.sent;
 
                 if (response.status === 200) {
-                  _this.posts = responseData.data;
-                  _this.noResultFound = _this.posts.length == 0 ? true : false;
+                  posts = responseData.data;
+                  _this.page = posts.current_page;
+                  _this.lastPage = posts.last_page;
+                  _this.posts = _this.posts.concat(posts.data);
+                  console.log(_this.posts.length);
                 }
 
                 if (response.status === 401) {
                   _services_auth_service__WEBPACK_IMPORTED_MODULE_1__.default.unauthorized(_this.$router);
                 }
 
-                _context.next = 20;
+                _context.next = 19;
                 break;
 
               case 16:
                 _context.prev = 16;
-                _context.t0 = _context["catch"](1);
-                console.log(_context.t0);
+                _context.t0 = _context["catch"](0);
                 toastr.error('Something went wrong. Please try again.', 'Oops!');
 
-              case 20:
+              case 19:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[1, 16]]);
+        }, _callee, null, [[0, 16]]);
       }))();
+    },
+    nextPage: function nextPage() {
+      this.page++;
+      this.getPosts();
     }
   }
 });
@@ -6744,28 +6755,19 @@ var RouteService = /*#__PURE__*/function () {
     }
   }, {
     key: "getPostsUrl",
-    value: function getPostsUrl(form) {
-      var url = RouteService.baseUrl + 'posts';
-
-      if (form.term) {
-        url += '?term=' + form.term.trim();
-      }
-
-      return url;
+    value: function getPostsUrl(form, page) {
+      var url = RouteService.baseUrl + 'posts?page=' + page;
+      return url += form.term ? '&term=' + form.term.trim() : '';
     }
   }, {
     key: "getMyPostsUrl",
-    value: function getMyPostsUrl(form, user) {
-      var url = RouteService.baseUrl + 'posts?userId=' + user.id;
-      url += form.term ? '&term=' + form.term.trim() : '';
-      return url;
+    value: function getMyPostsUrl(form, user, page) {
+      return this.getPostsUrl(form, page) + '&userId=' + user.id;
     }
   }, {
     key: "getPendingPostsUrl",
-    value: function getPendingPostsUrl(form, filter) {
-      var url = RouteService.baseUrl + 'posts?filter=' + filter;
-      url += form.term ? '&term=' + form.term.trim() : '';
-      return url;
+    value: function getPendingPostsUrl(form, filter, page) {
+      return this.getPostsUrl(form, page) + '&filter=' + filter;
     }
   }, {
     key: "getCreatePostUrl",
@@ -25804,7 +25806,7 @@ var render = function() {
                 attrs: { type: "submit" },
                 on: {
                   click: function($event) {
-                    return _vm.getPosts(1)
+                    return _vm.getPosts()
                   }
                 }
               },
@@ -25832,6 +25834,23 @@ var render = function() {
               ? _c("div", { staticClass: "fs-5 fw-normal" }, [
                   _vm._v(
                     "\n                    No result found.\n                "
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.page < _vm.lastPage
+              ? _c("div", { staticClass: "d-flex" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-outline-dark mx-auto",
+                      on: {
+                        click: function($event) {
+                          return _vm.nextPage()
+                        }
+                      }
+                    },
+                    [_vm._v("More")]
                   )
                 ])
               : _vm._e()
