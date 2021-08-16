@@ -29,6 +29,10 @@ class RouteService {
     getPostApproveUrl(postId) {
         return RouteService.baseUrl + `posts/${postId}/approve`
     }
+
+    getPostRejectUrl(postId) {
+        return RouteService.baseUrl + `posts/${postId}/reject`
+    }
 }
 
 export default new RouteService();

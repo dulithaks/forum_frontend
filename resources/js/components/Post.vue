@@ -1,5 +1,5 @@
 <template>
-    <div class="post-block d-flex mb-5 bg-white flex-column rounded-3 shadow">
+    <div v-if="post.status != 2" class="post-block d-flex mb-5 bg-white flex-column rounded-3 shadow">
         <div class="bg-white p-2">
             <!-- Post -->
             <div class="d-flex flex-row user-info">
@@ -10,15 +10,21 @@
                     class="date text-black-50">{{ post.human_date }}</span>
                 </div>
                 <div class="flex-grow-1 text-end">
+                    <div class="me-5">
                     <button v-on:click.prevent="approve"
                             v-if="!post.status && user && user.role == 'admin'"
-                            class="btn btn-success btn-sm mt-2" type="button">Approve
+                            class="btn btn-outline-primary btn-sm mt-2" type="button">Approve
+                    </button>
+                    <button v-on:click.prevent="reject"
+                            v-if="!post.status && user && user.role == 'admin'"
+                            class="btn btn-outline-secondary btn-sm mt-2" type="button">Reject
                     </button>
                     <button v-on:click.prevent="deletePost"
-                            v-if="(user && user.id == post.user.id) || (user && user.role == 'admin')"
-                            class="btn btn-danger ms-1 me-5 btn-sm mt-2" type="button">
+                            v-if="post.status == 1 && ((user && user.id == post.user.id) || (user && user.role == 'admin'))"
+                            class="btn btn-outline-danger ms-1 btn-sm mt-2" type="button">
                         Delete
                     </button>
+                    </div>
                 </div>
             </div>
             <div class="mt-2 ms-5">
@@ -153,6 +159,31 @@ export default {
                 if(response.status === 200) {
                     this.post.status = 1;
                     toastr.success('Successfully approved.');
+                }
+
+                response.status === 401 ? toastr.warning('Authorization Required.') : ''
+
+                response.status === 422 && responseData.message ? toastr.error(responseData.message) : ''
+
+                response.status === 500 ? toastr.error('Something went wrong. Please try again.', 'Oops!') : '';
+            } catch (error) {
+                toastr.error('Something went wrong. Please try again.', 'Oops!')
+            }
+        },
+        async reject() {
+            try {
+                const requestOptions = {
+                    method: 'PUT',
+                    headers: AuthService.authHeader(),
+                    body: JSON.stringify(this.form),
+                };
+
+                let response = await fetch(RouteService.getPostRejectUrl(this.post.id), requestOptions);
+                const responseData = await response.json();
+
+                if(response.status === 200) {
+                    this.post.status = 2;
+                    toastr.success('The post is rejected.');
                 }
 
                 response.status === 401 ? toastr.warning('Authorization Required.') : ''

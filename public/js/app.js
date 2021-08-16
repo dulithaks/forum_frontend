@@ -5511,6 +5511,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5682,6 +5688,56 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             }
           }
         }, _callee2, null, [[0, 14]]);
+      }))();
+    },
+    reject: function reject() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        var requestOptions, response, responseData;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                requestOptions = {
+                  method: 'PUT',
+                  headers: _services_auth_service__WEBPACK_IMPORTED_MODULE_1__.default.authHeader(),
+                  body: JSON.stringify(_this3.form)
+                };
+                _context3.next = 4;
+                return fetch(_services_route_service__WEBPACK_IMPORTED_MODULE_2__.default.getPostRejectUrl(_this3.post.id), requestOptions);
+
+              case 4:
+                response = _context3.sent;
+                _context3.next = 7;
+                return response.json();
+
+              case 7:
+                responseData = _context3.sent;
+
+                if (response.status === 200) {
+                  _this3.post.status = 2;
+                  toastr.success('The post is rejected.');
+                }
+
+                response.status === 401 ? toastr.warning('Authorization Required.') : '';
+                response.status === 422 && responseData.message ? toastr.error(responseData.message) : '';
+                response.status === 500 ? toastr.error('Something went wrong. Please try again.', 'Oops!') : '';
+                _context3.next = 17;
+                break;
+
+              case 14:
+                _context3.prev = 14;
+                _context3.t0 = _context3["catch"](0);
+                toastr.error('Something went wrong. Please try again.', 'Oops!');
+
+              case 17:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, null, [[0, 14]]);
       }))();
     }
   }
@@ -6496,6 +6552,11 @@ var RouteService = /*#__PURE__*/function () {
     key: "getPostApproveUrl",
     value: function getPostApproveUrl(postId) {
       return RouteService.baseUrl + "posts/".concat(postId, "/approve");
+    }
+  }, {
+    key: "getPostRejectUrl",
+    value: function getPostRejectUrl(postId) {
+      return RouteService.baseUrl + "posts/".concat(postId, "/reject");
     }
   }]);
 
@@ -24954,181 +25015,215 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass:
-        "post-block d-flex mb-5 bg-white flex-column rounded-3 shadow"
-    },
-    [
-      _c(
+  return _vm.post.status != 2
+    ? _c(
         "div",
-        { staticClass: "bg-white p-2" },
+        {
+          staticClass:
+            "post-block d-flex mb-5 bg-white flex-column rounded-3 shadow"
+        },
         [
-          _c("div", { staticClass: "d-flex flex-row user-info" }, [
-            _c("img", {
-              staticClass: "rounded-circle avatar",
-              attrs: { src: _vm.post.user.avatar }
-            }),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "d-flex flex-column justify-content-start ml-2" },
-              [
-                _c("span", { staticClass: "d-block font-weight-bold name" }, [
-                  _vm._v(_vm._s(_vm.post.user.full_name))
-                ]),
-                _c("span", { staticClass: "date text-black-50" }, [
-                  _vm._v(_vm._s(_vm.post.human_date))
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "flex-grow-1 text-end" }, [
-              !_vm.post.status && _vm.user && _vm.user.role == "admin"
-                ? _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-success btn-sm mt-2",
-                      attrs: { type: "button" },
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return _vm.approve.apply(null, arguments)
-                        }
-                      }
-                    },
-                    [_vm._v("Approve\n                ")]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              (_vm.user && _vm.user.id == _vm.post.user.id) ||
-              (_vm.user && _vm.user.role == "admin")
-                ? _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-danger ms-1 me-5 btn-sm mt-2",
-                      attrs: { type: "button" },
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return _vm.deletePost.apply(null, arguments)
-                        }
-                      }
-                    },
-                    [_vm._v("\n                    Delete\n                ")]
-                  )
-                : _vm._e()
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-2 ms-5" }, [
-            _c("p", { staticClass: "comment-text" }, [
-              _vm._v(
-                "\n                " + _vm._s(_vm.post.body) + "\n            "
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("comments", {
-            key: _vm.post.id,
-            ref: "comments",
-            attrs: {
-              "post-id": _vm.post.id,
-              "latest-comments": _vm.post.latest_comments
-            }
-          })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "bg-white p-2 pt-0" }, [
-        _c("div", { staticClass: "d-block mx-5" }, [
-          _c("textarea", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.form.body,
-                expression: "form.body"
-              }
-            ],
-            staticClass: "form-control ml-1 shadow-none textarea",
-            class: [
-              _vm.$v.form.body.$dirty && _vm.$v.form.body.$error
-                ? "border-danger"
-                : ""
-            ],
-            attrs: { placeholder: "Type " },
-            domProps: { value: _vm.form.body },
-            on: {
-              keyup: _vm.resetServerValidationErrors,
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.form, "body", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _vm.errors.body
-            ? _c("span", { staticClass: "validation-errors" }, [
-                _vm._v(_vm._s(_vm.errors.body[0]))
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          !_vm.$v.form.body.required && _vm.$v.form.body.$dirty
-            ? _c("div", { staticClass: "validation-errors" }, [
-                _vm._v("Field is required\n            ")
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          !_vm.$v.form.body.minLength && _vm.$v.form.body.$dirty
-            ? _c("div", { staticClass: "validation-errors" }, [
-                _vm._v(
-                  "Comment must have at least " +
-                    _vm._s(_vm.$v.form.body.$params.minLength.min) +
-                    "\n                letters.\n            "
-                )
-              ])
-            : _vm._e()
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "mt-1 mx-5 text-right" }, [
           _c(
-            "button",
-            {
-              staticClass: "btn btn-sm btn-dark",
-              attrs: { type: "button" },
-              on: {
-                click: function($event) {
-                  $event.preventDefault()
-                  return _vm.create.apply(null, arguments)
+            "div",
+            { staticClass: "bg-white p-2" },
+            [
+              _c("div", { staticClass: "d-flex flex-row user-info" }, [
+                _c("img", {
+                  staticClass: "rounded-circle avatar",
+                  attrs: { src: _vm.post.user.avatar }
+                }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "d-flex flex-column justify-content-start ml-2"
+                  },
+                  [
+                    _c(
+                      "span",
+                      { staticClass: "d-block font-weight-bold name" },
+                      [_vm._v(_vm._s(_vm.post.user.full_name))]
+                    ),
+                    _c("span", { staticClass: "date text-black-50" }, [
+                      _vm._v(_vm._s(_vm.post.human_date))
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "flex-grow-1 text-end" }, [
+                  _c("div", { staticClass: "me-5" }, [
+                    !_vm.post.status && _vm.user && _vm.user.role == "admin"
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-outline-primary btn-sm mt-2",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.approve.apply(null, arguments)
+                              }
+                            }
+                          },
+                          [_vm._v("Approve\n                ")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    !_vm.post.status && _vm.user && _vm.user.role == "admin"
+                      ? _c(
+                          "button",
+                          {
+                            staticClass:
+                              "btn btn-outline-secondary btn-sm mt-2",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.reject.apply(null, arguments)
+                              }
+                            }
+                          },
+                          [_vm._v("Reject\n                ")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.post.status == 1 &&
+                    ((_vm.user && _vm.user.id == _vm.post.user.id) ||
+                      (_vm.user && _vm.user.role == "admin"))
+                      ? _c(
+                          "button",
+                          {
+                            staticClass:
+                              "btn btn-outline-danger ms-1 btn-sm mt-2",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.deletePost.apply(null, arguments)
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                    Delete\n                "
+                            )
+                          ]
+                        )
+                      : _vm._e()
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "mt-2 ms-5" }, [
+                _c("p", { staticClass: "comment-text" }, [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(_vm.post.body) +
+                      "\n            "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("comments", {
+                key: _vm.post.id,
+                ref: "comments",
+                attrs: {
+                  "post-id": _vm.post.id,
+                  "latest-comments": _vm.post.latest_comments
                 }
-              }
-            },
-            [_vm._v("Comment")]
+              })
+            ],
+            1
           ),
           _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-sm btn-outline-dark ms-1",
-              attrs: { type: "button" },
-              on: {
-                click: function($event) {
-                  $event.preventDefault()
-                  return _vm.cancel.apply(null, arguments)
+          _c("div", { staticClass: "bg-white p-2 pt-0" }, [
+            _c("div", { staticClass: "d-block mx-5" }, [
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.body,
+                    expression: "form.body"
+                  }
+                ],
+                staticClass: "form-control ml-1 shadow-none textarea",
+                class: [
+                  _vm.$v.form.body.$dirty && _vm.$v.form.body.$error
+                    ? "border-danger"
+                    : ""
+                ],
+                attrs: { placeholder: "Type " },
+                domProps: { value: _vm.form.body },
+                on: {
+                  keyup: _vm.resetServerValidationErrors,
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "body", $event.target.value)
+                  }
                 }
-              }
-            },
-            [_vm._v("Cancel\n            ")]
-          )
-        ])
-      ])
-    ]
-  )
+              }),
+              _vm._v(" "),
+              _vm.errors.body
+                ? _c("span", { staticClass: "validation-errors" }, [
+                    _vm._v(_vm._s(_vm.errors.body[0]))
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              !_vm.$v.form.body.required && _vm.$v.form.body.$dirty
+                ? _c("div", { staticClass: "validation-errors" }, [
+                    _vm._v("Field is required\n            ")
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              !_vm.$v.form.body.minLength && _vm.$v.form.body.$dirty
+                ? _c("div", { staticClass: "validation-errors" }, [
+                    _vm._v(
+                      "Comment must have at least " +
+                        _vm._s(_vm.$v.form.body.$params.minLength.min) +
+                        "\n                letters.\n            "
+                    )
+                  ])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "mt-1 mx-5 text-right" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-sm btn-dark",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.create.apply(null, arguments)
+                    }
+                  }
+                },
+                [_vm._v("Comment")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-sm btn-outline-dark ms-1",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.cancel.apply(null, arguments)
+                    }
+                  }
+                },
+                [_vm._v("Cancel\n            ")]
+              )
+            ])
+          ])
+        ]
+      )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
