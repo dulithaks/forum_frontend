@@ -4,6 +4,7 @@ import AuthService from "./services/auth.service";
 import PostList from "./components/PostList";
 import PostCreate from "./components/PostCreate";
 import Register from "./components/Register";
+import MyPostList from "./components/MyPostList";
 
 export const routes = [
     {
@@ -38,6 +39,19 @@ export const routes = [
         name: 'postCreate',
         path: '/posts/create',
         component: PostCreate,
+        beforeEnter: (to, form, next) =>{
+            if(AuthService.isAuthUser()) {
+                next();
+            }
+            else {
+                return next({ name: 'login'});
+            }
+        }
+    },
+    {
+        name: 'myPosts',
+        path: '/my-posts',
+        component: MyPostList,
         beforeEnter: (to, form, next) =>{
             if(AuthService.isAuthUser()) {
                 next();

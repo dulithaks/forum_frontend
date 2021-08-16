@@ -5408,6 +5408,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MyPostList.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MyPostList.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _PostList__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PostList */ "./resources/js/components/PostList.vue");
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    PostList: _PostList__WEBPACK_IMPORTED_MODULE_0__.default
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/NotFound.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/NotFound.vue?vue&type=script&lang=js& ***!
@@ -5951,6 +5976,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['filter'],
   components: {
     Post: _Post__WEBPACK_IMPORTED_MODULE_4__.default,
     Comments: _Comments__WEBPACK_IMPORTED_MODULE_3__.default
@@ -5974,30 +6000,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var requestOptions, response, responseData;
+        var resourceUrl, requestOptions, response, responseData;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (typeof page === 'undefined') {
-                  page = 1;
+                page = typeof page === 'undefined' ? 1 : page;
+                _context.prev = 1;
+                resourceUrl = _services_route_service__WEBPACK_IMPORTED_MODULE_2__.default.getPostsUrl(_this.form);
+
+                if (_this.filter && _this.filter == 'my-posts') {
+                  resourceUrl = _services_route_service__WEBPACK_IMPORTED_MODULE_2__.default.getMyPostsUrl(_this.form, _services_auth_service__WEBPACK_IMPORTED_MODULE_1__.default.user());
                 }
 
-                _context.prev = 1;
                 requestOptions = {
                   method: 'GET',
                   headers: _services_auth_service__WEBPACK_IMPORTED_MODULE_1__.default.authHeader()
                 };
-                console.log(_services_route_service__WEBPACK_IMPORTED_MODULE_2__.default.getPostsUrl(_this.form));
-                _context.next = 6;
-                return fetch(_services_route_service__WEBPACK_IMPORTED_MODULE_2__.default.getPostsUrl(_this.form), requestOptions);
+                console.log(resourceUrl);
+                _context.next = 8;
+                return fetch(resourceUrl, requestOptions);
 
-              case 6:
+              case 8:
                 response = _context.sent;
-                _context.next = 9;
+                _context.next = 11;
                 return response.json();
 
-              case 9:
+              case 11:
                 responseData = _context.sent;
 
                 if (response.status === 200) {
@@ -6008,21 +6037,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _services_auth_service__WEBPACK_IMPORTED_MODULE_1__.default.unauthorized(_this.$router);
                 }
 
-                _context.next = 18;
+                _context.next = 20;
                 break;
 
-              case 14:
-                _context.prev = 14;
+              case 16:
+                _context.prev = 16;
                 _context.t0 = _context["catch"](1);
                 console.log(_context.t0);
                 toastr.error('Something went wrong. Please try again.', 'Oops!');
 
-              case 18:
+              case 20:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[1, 14]]);
+        }, _callee, null, [[1, 16]]);
       }))();
     }
   }
@@ -6359,6 +6388,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_PostList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/PostList */ "./resources/js/components/PostList.vue");
 /* harmony import */ var _components_PostCreate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/PostCreate */ "./resources/js/components/PostCreate.vue");
 /* harmony import */ var _components_Register__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/Register */ "./resources/js/components/Register.vue");
+/* harmony import */ var _components_MyPostList__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/MyPostList */ "./resources/js/components/MyPostList.vue");
+
 
 
 
@@ -6394,6 +6425,19 @@ var routes = [{
   name: 'postCreate',
   path: '/posts/create',
   component: _components_PostCreate__WEBPACK_IMPORTED_MODULE_4__.default,
+  beforeEnter: function beforeEnter(to, form, next) {
+    if (_services_auth_service__WEBPACK_IMPORTED_MODULE_2__.default.isAuthUser()) {
+      next();
+    } else {
+      return next({
+        name: 'login'
+      });
+    }
+  }
+}, {
+  name: 'myPosts',
+  path: '/my-posts',
+  component: _components_MyPostList__WEBPACK_IMPORTED_MODULE_6__.default,
   beforeEnter: function beforeEnter(to, form, next) {
     if (_services_auth_service__WEBPACK_IMPORTED_MODULE_2__.default.isAuthUser()) {
       next();
@@ -6440,6 +6484,12 @@ var AuthService = /*#__PURE__*/function () {
       } else {
         return false;
       }
+    }
+  }, {
+    key: "user",
+    value: function user() {
+      var user = JSON.parse(localStorage.getItem('user'));
+      return user || null;
     }
   }, {
     key: "logout",
@@ -6536,6 +6586,13 @@ var RouteService = /*#__PURE__*/function () {
         url += '?term=' + form.term.trim();
       }
 
+      return url;
+    }
+  }, {
+    key: "getMyPostsUrl",
+    value: function getMyPostsUrl(form, user) {
+      var url = RouteService.baseUrl + 'posts?userId=' + user.id;
+      url += form.term ? '&term=' + form.term.trim() : '';
       return url;
     }
   }, {
@@ -24027,6 +24084,45 @@ component.options.__file = "resources/js/components/Login.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/MyPostList.vue":
+/*!************************************************!*\
+  !*** ./resources/js/components/MyPostList.vue ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _MyPostList_vue_vue_type_template_id_ac890a56___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MyPostList.vue?vue&type=template&id=ac890a56& */ "./resources/js/components/MyPostList.vue?vue&type=template&id=ac890a56&");
+/* harmony import */ var _MyPostList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MyPostList.vue?vue&type=script&lang=js& */ "./resources/js/components/MyPostList.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _MyPostList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _MyPostList_vue_vue_type_template_id_ac890a56___WEBPACK_IMPORTED_MODULE_0__.render,
+  _MyPostList_vue_vue_type_template_id_ac890a56___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/MyPostList.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/NotFound.vue":
 /*!**********************************************!*\
   !*** ./resources/js/components/NotFound.vue ***!
@@ -24270,6 +24366,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/MyPostList.vue?vue&type=script&lang=js&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/MyPostList.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MyPostList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./MyPostList.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MyPostList.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MyPostList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
 /***/ "./resources/js/components/NotFound.vue?vue&type=script&lang=js&":
 /*!***********************************************************************!*\
   !*** ./resources/js/components/NotFound.vue?vue&type=script&lang=js& ***!
@@ -24397,6 +24509,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Login_vue_vue_type_template_id_6bdc8b8e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Login_vue_vue_type_template_id_6bdc8b8e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Login.vue?vue&type=template&id=6bdc8b8e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Login.vue?vue&type=template&id=6bdc8b8e&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/MyPostList.vue?vue&type=template&id=ac890a56&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/MyPostList.vue?vue&type=template&id=ac890a56& ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MyPostList_vue_vue_type_template_id_ac890a56___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MyPostList_vue_vue_type_template_id_ac890a56___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MyPostList_vue_vue_type_template_id_ac890a56___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./MyPostList.vue?vue&type=template&id=ac890a56& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MyPostList.vue?vue&type=template&id=ac890a56&");
 
 
 /***/ }),
@@ -24606,7 +24735,7 @@ var render = function() {
                                       "router-link",
                                       {
                                         staticClass: "dropdown-item",
-                                        attrs: { to: "/", href: "#" }
+                                        attrs: { to: "/my-posts", href: "#" }
                                       },
                                       [_vm._v("My Posts")]
                                     )
@@ -24641,7 +24770,7 @@ var render = function() {
                           staticStyle: { "align-content": "center" }
                         }),
                         _vm._v(" "),
-                        _c("li", { staticClass: "nav-item dropdown" }, [
+                        _c("li", { staticClass: "nav-item dropdown me-1" }, [
                           _c(
                             "a",
                             {
@@ -24666,7 +24795,7 @@ var render = function() {
                           _c(
                             "ul",
                             {
-                              staticClass: "dropdown-menu",
+                              staticClass: "dropdown-menu navbar-user",
                               attrs: { "aria-labelledby": "navbarDropdown" }
                             },
                             [
@@ -24948,6 +25077,31 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MyPostList.vue?vue&type=template&id=ac890a56&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MyPostList.vue?vue&type=template&id=ac890a56& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("post-list", { attrs: { filter: "my-posts" } })
+}
+var staticRenderFns = []
 render._withStripped = true
 
 

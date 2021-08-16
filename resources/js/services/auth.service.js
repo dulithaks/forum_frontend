@@ -9,6 +9,11 @@ class AuthService {
         }
     }
 
+    user() {
+        let user = JSON.parse(localStorage.getItem('user'));
+        return user || null;
+    }
+
     logout(router) {
         localStorage.removeItem('user');
         router.push({name: 'login'})

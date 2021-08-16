@@ -26,7 +26,7 @@
                                     <router-link to="/posts/create" class="dropdown-item" href="#">Create</router-link>
                                 </li>
                                 <li>
-                                    <router-link to="/" class="dropdown-item" href="#">My Posts</router-link>
+                                    <router-link to="/my-posts" class="dropdown-item" href="#">My Posts</router-link>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
@@ -41,12 +41,12 @@
                         <li style="align-content:center">
 
                         </li>
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown me-1">
                             <a class="nav-link dropdown-toggle" href="#" id="" role="button" data-bs-toggle="dropdown"
                                aria-expanded="false">
                                 {{ userFirstName }}
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <ul class="dropdown-menu navbar-user" aria-labelledby="navbarDropdown">
                                 <li>
                                     <a v-on:click="logout"
                                        class="dropdown-item">Logout</a>

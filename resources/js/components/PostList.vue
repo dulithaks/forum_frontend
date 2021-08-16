@@ -31,6 +31,7 @@ import Comments from "./Comments";
 import Post from "./Post";
 
 export default {
+    props: ['filter'],
     components: {
         Post,
         Comments
@@ -51,19 +52,23 @@ export default {
     },
     methods: {
         async getPosts(page) {
-            if (typeof page === 'undefined') {
-                page = 1;
-            }
+            page = typeof page === 'undefined' ? 1 : page;
 
             try {
+                let resourceUrl = RouteService.getPostsUrl(this.form);
+                
+                if(this.filter && this.filter == 'my-posts') {
+                    resourceUrl = RouteService.getMyPostsUrl(this.form, AuthService.user());
+                }
+
                 const requestOptions = {
                     method: 'GET',
                     headers: AuthService.authHeader(),
                 };
 
-                console.log(RouteService.getPostsUrl(this.form))
+                console.log(resourceUrl);
 
-                let response = await fetch(RouteService.getPostsUrl(this.form), requestOptions);
+                let response = await fetch(resourceUrl, requestOptions);
                 const responseData = await response.json();
 
                 if (response.status === 200) {

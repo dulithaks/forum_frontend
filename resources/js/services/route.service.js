@@ -18,6 +18,12 @@ class RouteService {
         return url;
     }
 
+    getMyPostsUrl(form, user) {
+        let url = RouteService.baseUrl + 'posts?userId=' + user.id;
+        url +=  form.term ? '&term=' + form.term.trim() : '';
+        return url;
+    }
+
     getCreatePostUrl() {
         return RouteService.baseUrl + `posts`
     }
