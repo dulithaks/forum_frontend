@@ -17,6 +17,7 @@ window.toastr.options = {
     "positionClass": "toast-top-center",
     "onclick": null,
     "progressBar": true,
+    "preventDuplicates ": true,
 }
 
 /**

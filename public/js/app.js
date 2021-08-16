@@ -5248,6 +5248,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../services/auth.service */ "./resources/js/services/auth.service.js");
+/* harmony import */ var _services_route_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../services/route.service */ "./resources/js/services/route.service.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -5297,7 +5300,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
+
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -5307,6 +5312,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       },
       errors: []
     };
+  },
+  validations: {
+    form: {
+      email: {
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_3__.required,
+        email: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_3__.email
+      },
+      password: {
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_3__.required
+      }
+    }
   },
   methods: {
     login: function login() {
@@ -5319,93 +5335,92 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
-                requestOptions = {
-                  method: 'POST',
-                  headers: {
-                    'Accept': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify(_this.form)
-                };
-                _context.next = 4;
-                return fetch('http://127.0.0.1:8000/api/login', requestOptions);
+
+                _this.$v.$touch();
+
+                if (!_this.$v.$invalid) {
+                  _context.next = 4;
+                  break;
+                }
+
+                return _context.abrupt("return", toastr.error('Please fill the login form.'));
 
               case 4:
-                response = _context.sent;
+                requestOptions = {
+                  method: 'POST',
+                  headers: _services_auth_service__WEBPACK_IMPORTED_MODULE_1__.default.guestHeader(),
+                  body: JSON.stringify(_this.form)
+                };
                 _context.next = 7;
-                return response.json();
+                return fetch(_services_route_service__WEBPACK_IMPORTED_MODULE_2__.default.getLoginUrl(), requestOptions);
 
               case 7:
+                response = _context.sent;
+                _context.next = 10;
+                return response.json();
+
+              case 10:
                 responseData = _context.sent;
 
                 if (!(response.status === 200)) {
-                  _context.next = 12;
+                  _context.next = 15;
                   break;
                 }
 
                 localStorage.setItem('user', JSON.stringify(responseData.data));
-                _context.next = 12;
+                _context.next = 15;
                 return _this.$router.push('/');
 
-              case 12:
+              case 15:
                 if (response.status === 422) {
-                  _this.errors = responseData.errors || [];
-                  console.log(responseData, responseData.errors);
+                  _this.formatServerValidationErrors(responseData.errors);
 
-                  if (!responseData.errors && responseData.message) {
-                    toastr.error(responseData.message);
-                  }
+                  responseData.message ? toastr.error(responseData.message) : '';
                 }
 
-                _context.next = 19;
+                response.status === 401 ? toastr.warning('Authorization Required.') : '';
+                response.status === 500 ? toastr.error('Something went wrong. Please try again.', 'Oops!') : '';
+                _context.next = 24;
                 break;
 
-              case 15:
-                _context.prev = 15;
+              case 20:
+                _context.prev = 20;
                 _context.t0 = _context["catch"](0);
                 console.log(_context.t0);
                 toastr.error('Something went wrong. Please try again.', 'Oops!');
 
-              case 19:
+              case 24:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 15]]);
+        }, _callee, null, [[0, 20]]);
       }))();
     },
-    validate: function validate(event) {
-      this.formValidator(event.target.name);
+    validateForm: function validateForm(event) {
+      this.$v.form[event.target.name].$touch();
+      this.addValidationErrors(event.target.name);
     },
-    formValidator: function formValidator(name) {
-      var _this2 = this;
+    addValidationErrors: function addValidationErrors(field) {
+      console.log(field, this.$v.form[field].required, this.$v.form[field].email, this.$v.form[field].$dirty, this.$v.form[field].$error);
 
-      setTimeout(function () {
-        var value = _this2.form[name];
-        console.log(name, value);
+      if (!this.$v.form[field].$error) {
+        return this.errors[field] = '';
+      }
 
-        if (value) {
-          _this2.errors[name] = null;
-        }
-
-        if (value) {
-          _this2.errors[name] = null;
-        } else {
-          _this2.errors[name] = ["The ".concat(name, " field is required.")];
-        }
-
-        if (name == 'email' && value) {
-          console.log(_this2.validEmail(value), value);
-          _this2.errors[name] = _this2.validEmail(value) ? null : ['The email must be a valid email address.'];
-          console.log(_this2.errors[name]);
-          console.log(_this2.errors);
-        }
-      }, 100);
+      if (!this.$v.form[field].required && this.$v.form[field].$dirty) {
+        this.errors[field] = "The ".concat(field.replace('_', ' '), " field is required.");
+      } else if (!this.$v.form.email.email && this.$v.form.email.$dirty) {
+        this.errors[field] = "The ".concat(field.replace('_', ' '), " must be a valid email address.");
+      }
     },
-    validEmail: function validEmail(email) {
-      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(email);
+    formatServerValidationErrors: function formatServerValidationErrors(errors) {
+      console.log(errors);
+      errors = errors || {};
+      Object.keys(errors).map(function (key, index) {
+        errors[key] = errors[key][0];
+      });
+      this.errors = errors;
     }
   }
 });
@@ -6283,7 +6298,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   break;
                 }
 
-                return _context.abrupt("return", toastr.error('Please check input.'));
+                return _context.abrupt("return", toastr.error('Please fill the registration form.'));
 
               case 4:
                 requestOptions = {
@@ -6303,17 +6318,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 responseData = _context.sent;
 
                 if (!(response.status === 201)) {
-                  _context.next = 17;
+                  _context.next = 15;
                   break;
                 }
 
                 localStorage.setItem('user', JSON.stringify(responseData.data));
-                console.log(11111111111111);
-                console.log(responseData.data);
-                _context.next = 17;
+                _context.next = 15;
                 return _this.$router.push('/');
 
-              case 17:
+              case 15:
                 if (response.status === 422) {
                   _this.formatServerValidationErrors(responseData.errors);
 
@@ -6324,21 +6337,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   responseData.message ? toastr.error(responseData.message) : '';
                 }
 
-                _context.next = 25;
+                _context.next = 23;
                 break;
 
-              case 21:
-                _context.prev = 21;
+              case 19:
+                _context.prev = 19;
                 _context.t0 = _context["catch"](0);
                 console.log(_context.t0);
                 toastr.error('Something went wrong. Please try again.', 'Oops!');
 
-              case 25:
+              case 23:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 21]]);
+        }, _callee, null, [[0, 19]]);
       }))();
     },
     validateForm: function validateForm(event) {
@@ -6360,7 +6373,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.errors[field] = "The ".concat(field.replace('_', ' '), " must be at least 8 characters.");
       }
 
-      if (!this.$v.form[field].email && this.$v.form[field].$dirty) {
+      if (!this.$v.form.email.email && this.$v.form.email.$dirty) {
         this.errors[field] = "The ".concat(field.replace('_', ' '), " must be a valid email address.");
       }
     },
@@ -6442,7 +6455,8 @@ window.toastr.options = {
   "closeButton": true,
   "positionClass": "toast-top-center",
   "onclick": null,
-  "progressBar": true
+  "progressBar": true,
+  "preventDuplicates ": true
 };
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -6681,6 +6695,11 @@ var RouteService = /*#__PURE__*/function () {
     key: "createCommentUrl",
     value: function createCommentUrl(postId) {
       return RouteService.baseUrl + "posts/".concat(postId, "/comments");
+    }
+  }, {
+    key: "getLoginUrl",
+    value: function getLoginUrl() {
+      return RouteService.baseUrl + "login";
     }
   }, {
     key: "getCommentsUrl",
@@ -25168,22 +25187,21 @@ var render = function() {
         },
         domProps: { value: _vm.form.email },
         on: {
-          keydown: _vm.validate,
-          change: function($event) {
-            return _vm.formValidator("email")
-          },
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.form, "email", $event.target.value)
-          }
+          input: [
+            function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.form, "email", $event.target.value)
+            },
+            _vm.validateForm
+          ]
         }
       }),
       _vm._v(" "),
       _vm.errors.email
         ? _c("span", { staticClass: "validation-errors" }, [
-            _vm._v(_vm._s(_vm.errors.email[0]))
+            _vm._v(_vm._s(_vm.errors.email))
           ])
         : _vm._e()
     ]),
@@ -25210,22 +25228,21 @@ var render = function() {
         },
         domProps: { value: _vm.form.password },
         on: {
-          keydown: _vm.validate,
-          change: function($event) {
-            return _vm.formValidator("password")
-          },
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.form, "password", $event.target.value)
-          }
+          input: [
+            function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.form, "password", $event.target.value)
+            },
+            _vm.validateForm
+          ]
         }
       }),
       _vm._v(" "),
       _vm.errors.password
         ? _c("span", { staticClass: "validation-errors" }, [
-            _vm._v(_vm._s(_vm.errors.password[0]))
+            _vm._v(_vm._s(_vm.errors.password))
           ])
         : _vm._e()
     ]),
@@ -25258,7 +25275,7 @@ var render = function() {
               staticStyle: { "margin-top": "-1px" },
               attrs: { to: "/register", href: "#" }
             },
-            [_vm._v("Register")]
+            [_vm._v("Register\n            ")]
           )
         ],
         1
@@ -25864,13 +25881,15 @@ var render = function() {
         },
         domProps: { value: _vm.form.first_name },
         on: {
-          keyup: _vm.validateForm,
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.form, "first_name", $event.target.value)
-          }
+          input: [
+            function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.form, "first_name", $event.target.value)
+            },
+            _vm.validateForm
+          ]
         }
       }),
       _vm._v(" "),
@@ -25946,13 +25965,15 @@ var render = function() {
         },
         domProps: { value: _vm.form.email },
         on: {
-          keyup: _vm.validateForm,
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.form, "email", $event.target.value)
-          }
+          input: [
+            function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.form, "email", $event.target.value)
+            },
+            _vm.validateForm
+          ]
         }
       }),
       _vm._v(" "),
@@ -25985,13 +26006,15 @@ var render = function() {
         },
         domProps: { value: _vm.form.password },
         on: {
-          keyup: _vm.validateForm,
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.form, "password", $event.target.value)
-          }
+          input: [
+            function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.form, "password", $event.target.value)
+            },
+            _vm.validateForm
+          ]
         }
       }),
       _vm._v(" "),

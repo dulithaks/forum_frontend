@@ -6,7 +6,7 @@
         <div class="mb-3">
             <label for="first_name" class="form-label">First Name</label>
             <input v-model="form.first_name"
-                   v-on:keyup="validateForm"
+                   @input="validateForm"
                    type="text"
                    name="first_name"
                    class="form-control"
@@ -32,7 +32,7 @@
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input v-model="form.email"
-                   v-on:keyup="validateForm"
+                   @input="validateForm"
                    type="email"
                    name="email"
                    class="form-control"
@@ -45,7 +45,7 @@
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
             <input v-model="form.password"
-                   v-on:keyup="validateForm"
+                   @input="validateForm"
                    type="password"
                    class="form-control"
                    name="password"
@@ -100,7 +100,7 @@ export default {
             try {
                 this.$v.$touch()
                 if (this.$v.$invalid) {
-                    return toastr.error('Please check input.');
+                    return toastr.error('Please fill the registration form.');
                 }
 
                 const requestOptions = {
@@ -114,8 +114,6 @@ export default {
 
                 if (response.status === 201) {
                     localStorage.setItem('user', JSON.stringify(responseData.data));
-                    console.log(11111111111111)
-                    console.log(responseData.data)
                     await this.$router.push('/');
                 }
 
@@ -151,7 +149,7 @@ export default {
                 this.errors[field] = `The ${field.replace('_', ' ')} must be at least 8 characters.`;
             }
 
-            if (!this.$v.form[field].email && this.$v.form[field].$dirty) {
+            if (!this.$v.form.email.email && this.$v.form.email.$dirty) {
                  this.errors[field] = `The ${field.replace('_', ' ')} must be a valid email address.`;
             }
         },

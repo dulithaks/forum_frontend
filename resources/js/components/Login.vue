@@ -6,27 +6,25 @@
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input v-model="form.email"
-                   v-on:keydown="validate"
-                   v-on:change="formValidator('email')"
+                   @input="validateForm"
                    type="email"
                    name="email"
                    class="form-control"
                    placeholder="Enter email"
                    autocomplete="off"
             >
-            <span v-if="errors.email" class="validation-errors">{{ errors.email[0] }}</span>
+            <span v-if="errors.email" class="validation-errors">{{ errors.email }}</span>
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
             <input v-model="form.password"
-                   v-on:keydown="validate"
-                   v-on:change="formValidator('password')"
+                   @input="validateForm"
                    type="password"
                    class="form-control"
                    name="password"
                    placeholder="Enter password"
             >
-            <span v-if="errors.password" class="validation-errors">{{ errors.password[0] }}</span>
+            <span v-if="errors.password" class="validation-errors">{{ errors.password }}</span>
         </div>
         <div class="mb-3 text-center">
             <button v-on:click.prevent="login" type="button" class="btn btn-dark w-50">Login</button>
@@ -36,13 +34,18 @@
                              href="#"
                              class="ps-2 text-decoration-none fw-bold fst-italic"
                              style="margin-top: -1px"
-                >Register</router-link>
+                >Register
+                </router-link>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import {required, email, minLength} from "vuelidate/lib/validators";
+import AuthService from './../services/auth.service'
+import RouteService from './../services/route.service';
+
 export default {
     data() {
         return {
@@ -53,20 +56,32 @@ export default {
             errors: [],
         }
     },
+    validations: {
+        form: {
+            email: {
+                required,
+                email,
+            },
+            password: {
+                required,
+            },
+        },
+    },
     methods: {
         async login() {
             try {
+                this.$v.$touch()
+                if (this.$v.$invalid) {
+                    return toastr.error('Please fill the login form.');
+                }
+
                 const requestOptions = {
                     method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Access-Control-Allow-Origin': '*',
-                        'Content-Type': 'application/json',
-                    },
+                    headers: AuthService.guestHeader(),
                     body: JSON.stringify(this.form),
                 };
 
-                let response = await fetch('http://127.0.0.1:8000/api/login', requestOptions);
+                let response = await fetch(RouteService.getLoginUrl(), requestOptions);
                 const responseData = await response.json();
 
                 if (response.status === 200) {
@@ -75,50 +90,44 @@ export default {
                 }
 
                 if (response.status === 422) {
-                    this.errors = responseData.errors || [];
-
-                    console.log(responseData, responseData.errors)
-
-                    if(!responseData.errors && responseData.message) {
-                        toastr.error(responseData.message);
-                    }
+                    this.formatServerValidationErrors(responseData.errors);
+                    responseData.message ? toastr.error(responseData.message) : '';
                 }
+
+                response.status === 401 ? toastr.warning('Authorization Required.') : ''
+
+                response.status === 500 ? toastr.error('Something went wrong. Please try again.', 'Oops!') : '';
             } catch (error) {
                 console.log(error)
                 toastr.error('Something went wrong. Please try again.', 'Oops!')
             }
         },
-        validate(event) {
-            this.formValidator(event.target.name)
+        validateForm(event) {
+                this.$v.form[event.target.name].$touch()
+                this.addValidationErrors(event.target.name);
         },
-        formValidator(name) {
-            setTimeout(() => {
-                let value = this.form[name];
-                console.log(name, value)
+        addValidationErrors(field) {
+            console.log(field, this.$v.form[field].required, this.$v.form[field].email, this.$v.form[field].$dirty, this.$v.form[field].$error)
 
-                if(value) {
-                    this.errors[name] = null
-                }
+            if (!this.$v.form[field].$error) {
+                return this.errors[field] = '';
+            }
 
-                if (value) {
-                    this.errors[name] = null;
-                }
-                else {
-                    this.errors[name] = [`The ${name} field is required.`];
-                }
-
-                if (name == 'email' && value) {
-                    console.log(this.validEmail(value), value)
-                    this.errors[name] = this.validEmail(value) ? null : ['The email must be a valid email address.'];
-                    console.log(this.errors[name])
-                    console.log(this.errors)
-                }
-            }, 100);
+            if (!this.$v.form[field].required && this.$v.form[field].$dirty) {
+                this.errors[field] = `The ${field.replace('_', ' ')} field is required.`;
+            }
+            else if (!this.$v.form.email.email && this.$v.form.email.$dirty) {
+                this.errors[field] = `The ${field.replace('_', ' ')} must be a valid email address.`;
+            }
         },
-        validEmail(email) {
-            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(email);
-        }
+        formatServerValidationErrors(errors) {
+            console.log(errors)
+            errors = errors || {}
+            Object.keys(errors).map(function (key, index) {
+                errors[key] = errors[key][0];
+            });
+            this.errors = errors;
+        },
     }
 }
 </script>

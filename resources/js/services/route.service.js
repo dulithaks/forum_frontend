@@ -5,6 +5,10 @@ class RouteService {
         return RouteService.baseUrl + `posts/${postId}/comments`
     }
 
+    getLoginUrl() {
+        return RouteService.baseUrl + `login`
+    }
+
     getCommentsUrl(postId) {
         return RouteService.baseUrl + `posts/${postId}/comments`
     }
