@@ -45,6 +45,10 @@ class RouteService {
     getPostRejectUrl(postId) {
         return RouteService.baseUrl + `posts/${postId}/reject`
     }
+
+    getPostDeleteUrl(postId) {
+        return RouteService.baseUrl + `posts/${postId}`
+    }
 }
 
 export default new RouteService();

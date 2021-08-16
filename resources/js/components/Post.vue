@@ -44,7 +44,7 @@
                           :class="[
                             $v.form.body.$dirty && $v.form.body.$error ? 'border-danger' : ''
                           ]"
-                          placeholder="Type "
+                          placeholder="Leave your comment here"
                           class="form-control ml-1 shadow-none textarea"></textarea>
                 <span v-if="errors.body" class="validation-errors">{{ errors.body[0] }}</span>
                 <div v-if="!$v.form.body.required && $v.form.body.$dirty"
@@ -194,8 +194,32 @@ export default {
             } catch (error) {
                 toastr.error('Something went wrong. Please try again.', 'Oops!')
             }
-        }
+        },
+        async deletePost() {
+            try {
+                const requestOptions = {
+                    method: 'DELETE',
+                    headers: AuthService.authHeader(),
+                    body: JSON.stringify(this.form),
+                };
 
+                let response = await fetch(RouteService.getPostDeleteUrl(this.post.id), requestOptions);
+                const responseData = await response.json();
+
+                if(response.status === 200) {
+                    this.post.status = 2; // Hide post
+                    toastr.success('The post is deleted.');
+                }
+
+                response.status === 401 ? toastr.warning('Authorization Required.') : ''
+
+                response.status === 422 && responseData.message ? toastr.error(responseData.message) : ''
+
+                response.status === 500 ? toastr.error('Something went wrong. Please try again.', 'Oops!') : '';
+            } catch (error) {
+                toastr.error('Something went wrong. Please try again.', 'Oops!')
+            }
+        }
     }
 }
 </script>

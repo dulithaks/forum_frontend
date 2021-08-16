@@ -5764,6 +5764,57 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee3, null, [[0, 14]]);
       }))();
+    },
+    deletePost: function deletePost() {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+        var requestOptions, response, responseData;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.prev = 0;
+                requestOptions = {
+                  method: 'DELETE',
+                  headers: _services_auth_service__WEBPACK_IMPORTED_MODULE_1__.default.authHeader(),
+                  body: JSON.stringify(_this4.form)
+                };
+                _context4.next = 4;
+                return fetch(_services_route_service__WEBPACK_IMPORTED_MODULE_2__.default.getPostDeleteUrl(_this4.post.id), requestOptions);
+
+              case 4:
+                response = _context4.sent;
+                _context4.next = 7;
+                return response.json();
+
+              case 7:
+                responseData = _context4.sent;
+
+                if (response.status === 200) {
+                  _this4.post.status = 2; // Hide post
+
+                  toastr.success('The post is deleted.');
+                }
+
+                response.status === 401 ? toastr.warning('Authorization Required.') : '';
+                response.status === 422 && responseData.message ? toastr.error(responseData.message) : '';
+                response.status === 500 ? toastr.error('Something went wrong. Please try again.', 'Oops!') : '';
+                _context4.next = 17;
+                break;
+
+              case 14:
+                _context4.prev = 14;
+                _context4.t0 = _context4["catch"](0);
+                toastr.error('Something went wrong. Please try again.', 'Oops!');
+
+              case 17:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, null, [[0, 14]]);
+      }))();
     }
   }
 });
@@ -6670,6 +6721,11 @@ var RouteService = /*#__PURE__*/function () {
     key: "getPostRejectUrl",
     value: function getPostRejectUrl(postId) {
       return RouteService.baseUrl + "posts/".concat(postId, "/reject");
+    }
+  }, {
+    key: "getPostDeleteUrl",
+    value: function getPostDeleteUrl(postId) {
+      return RouteService.baseUrl + "posts/".concat(postId);
     }
   }]);
 
@@ -25231,7 +25287,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("post-list", {
-    attrs: { filter: "pending-posts", "page-title": "My Posts" }
+    attrs: { filter: "my-posts", "page-title": "My Posts" }
   })
 }
 var staticRenderFns = []
@@ -25440,7 +25496,7 @@ var render = function() {
                     ? "border-danger"
                     : ""
                 ],
-                attrs: { placeholder: "Type " },
+                attrs: { placeholder: "Leave your comment here" },
                 domProps: { value: _vm.form.body },
                 on: {
                   keyup: _vm.resetServerValidationErrors,
@@ -25733,7 +25789,9 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("post-list", { attrs: { "page-title": "Posts For Approve" } })
+  return _c("post-list", {
+    attrs: { filter: "pending-posts", "page-title": "Posts For Approve" }
+  })
 }
 var staticRenderFns = []
 render._withStripped = true

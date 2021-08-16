@@ -1,5 +1,5 @@
 <template>
-    <post-list filter="pending-posts" page-title="My Posts"></post-list>
+    <post-list filter="my-posts" page-title="My Posts"></post-list>
 </template>
 
 <script>
