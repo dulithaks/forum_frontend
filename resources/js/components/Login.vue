@@ -29,7 +29,15 @@
             <span v-if="errors.password" class="validation-errors">{{ errors.password[0] }}</span>
         </div>
         <div class="mb-3 text-center">
-            <button v-on:click.prevent="login" type="button" class="btn btn-dark">Login</button>
+            <button v-on:click.prevent="login" type="button" class="btn btn-dark w-50">Login</button>
+            <div class="d-flex justify-content-center links mt-1">
+                Don't have an account?
+                <router-link to="/register"
+                             href="#"
+                             class="ps-2 text-decoration-none fw-bold fst-italic"
+                             style="margin-top: -1px"
+                >Register</router-link>
+            </div>
         </div>
     </div>
 </template>

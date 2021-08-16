@@ -3,12 +3,23 @@ import NotFound from "./components/NotFound";
 import AuthService from "./services/auth.service";
 import PostList from "./components/PostList";
 import PostCreate from "./components/PostCreate";
+import Register from "./components/Register";
 
 export const routes = [
     {
         name: 'notfound',
         path: '*',
         component: NotFound
+    },
+    {
+        name: 'login',
+        path: '/login',
+        component: Login
+    },
+    {
+        name: 'register',
+        path: '/register',
+        component: Register
     },
     {
         name: 'home',
@@ -35,10 +46,5 @@ export const routes = [
                 return next({ name: 'login'});
             }
         }
-    },
-    {
-        name: 'login',
-        path: '/login',
-        component: Login
     },
 ];

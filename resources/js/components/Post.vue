@@ -96,6 +96,7 @@ export default {
                 if (response.status === 200) {
                     this.form.body = '';
                     this.errors = [];
+                    this.$v.$reset();
                     await this.$refs.comments.getComments(1);
                     return toastr.success('Thanks for your comment.');
                 }
@@ -120,6 +121,7 @@ export default {
         },
         cancel() {
             this.form.body = '';
+            this.$v.$reset();
         }
     }
 }

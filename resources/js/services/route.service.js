@@ -21,6 +21,10 @@ class RouteService {
     getCreatePostUrl() {
         return RouteService.baseUrl + `posts`
     }
+
+    getRegisterUrl() {
+        return RouteService.baseUrl + `register`
+    }
 }
 
 export default new RouteService();

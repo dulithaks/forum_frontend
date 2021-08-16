@@ -13,17 +13,27 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <router-link to="/posts/create" class="nav-link nav-link-custom" href="#">Create</router-link>
+                            <router-link to="/posts/create" class="nav-link nav-link-custom" href="#">Create
+                            </router-link>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link nav-link-custom dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link nav-link-custom dropdown-toggle" href="#" id="navbarDropdown"
+                               role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Posts
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><router-link to="/posts/create" class="dropdown-item" href="#">Create</router-link></li>
-                                <li><router-link to="/" class="dropdown-item" href="#">My Posts</router-link></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><router-link to="/" class="dropdown-item" href="#">Waiting for approve</router-link></li>
+                                <li>
+                                    <router-link to="/posts/create" class="dropdown-item" href="#">Create</router-link>
+                                </li>
+                                <li>
+                                    <router-link to="/" class="dropdown-item" href="#">My Posts</router-link>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <router-link to="/" class="dropdown-item" href="#">Waiting for approve</router-link>
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -32,8 +42,9 @@
 
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Name
+                            <a class="nav-link dropdown-toggle" href="#" id="" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                {{ userFirstName }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li>
@@ -64,6 +75,10 @@ export default {
                 password: '',
             },
             errors: [],
+            get userFirstName() {
+                const user = JSON.parse(localStorage.getItem('user'));
+                return user.first_name || 'User';
+            },
         }
     },
     methods: {
