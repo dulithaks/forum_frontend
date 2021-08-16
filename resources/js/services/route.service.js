@@ -25,6 +25,10 @@ class RouteService {
     getRegisterUrl() {
         return RouteService.baseUrl + `register`
     }
+
+    getPostApproveUrl(postId) {
+        return RouteService.baseUrl + `posts/${postId}/approve`
+    }
 }
 
 export default new RouteService();

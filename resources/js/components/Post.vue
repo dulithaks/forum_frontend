@@ -7,7 +7,19 @@
                      :src="post.user.avatar">
                 <div class="d-flex flex-column justify-content-start ml-2"><span
                     class="d-block font-weight-bold name">{{ post.user.full_name }}</span><span
-                    class="date text-black-50">{{ post.human_date }}</span></div>
+                    class="date text-black-50">{{ post.human_date }}</span>
+                </div>
+                <div class="flex-grow-1 text-end">
+                    <button v-on:click.prevent="approve"
+                            v-if="!post.status && user && user.role == 'admin'"
+                            class="btn btn-success btn-sm mt-2" type="button">Approve
+                    </button>
+                    <button v-on:click.prevent="deletePost"
+                            v-if="(user && user.id == post.user.id) || (user && user.role == 'admin')"
+                            class="btn btn-danger ms-1 me-5 btn-sm mt-2" type="button">
+                        Delete
+                    </button>
+                </div>
             </div>
             <div class="mt-2 ms-5">
                 <p class="comment-text">
@@ -26,6 +38,7 @@
                           :class="[
                             $v.form.body.$dirty && $v.form.body.$error ? 'border-danger' : ''
                           ]"
+                          placeholder="Type "
                           class="form-control ml-1 shadow-none textarea"></textarea>
                 <span v-if="errors.body" class="validation-errors">{{ errors.body[0] }}</span>
                 <div v-if="!$v.form.body.required && $v.form.body.$dirty"
@@ -37,8 +50,8 @@
                 </div>
             </div>
             <div class="mt-1 mx-5 text-right">
-                <button v-on:click.prevent="create" class="btn btn-dark" type="button">Comment</button>
-                <button v-on:click.prevent="cancel" class="btn btn-outline-dark ms-1" type="button">Cancel
+                <button v-on:click.prevent="create" class="btn btn-sm btn-dark" type="button">Comment</button>
+                <button v-on:click.prevent="cancel" class="btn btn-sm btn-outline-dark ms-1" type="button">Cancel
                 </button>
             </div>
         </div>
@@ -66,6 +79,9 @@ export default {
                 post_id: null,
             },
             errors: [],
+            get user() {
+                return  JSON.parse(localStorage.getItem('user')) || null;
+            },
         }
     },
     validations: {
@@ -122,7 +138,33 @@ export default {
         cancel() {
             this.form.body = '';
             this.$v.$reset();
+        },
+        async approve() {
+            try {
+                const requestOptions = {
+                    method: 'PUT',
+                    headers: AuthService.authHeader(),
+                    body: JSON.stringify(this.form),
+                };
+
+                let response = await fetch(RouteService.getPostApproveUrl(this.post.id), requestOptions);
+                const responseData = await response.json();
+
+                if(response.status === 200) {
+                    this.post.status = 1;
+                    toastr.success('Successfully approved.');
+                }
+
+                response.status === 401 ? toastr.warning('Authorization Required.') : ''
+
+                response.status === 422 && responseData.message ? toastr.error(responseData.message) : ''
+
+                response.status === 500 ? toastr.error('Something went wrong. Please try again.', 'Oops!') : '';
+            } catch (error) {
+                toastr.error('Something went wrong. Please try again.', 'Oops!')
+            }
         }
+
     }
 }
 </script>

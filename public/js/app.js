@@ -5498,6 +5498,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5516,7 +5529,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         body: '',
         post_id: null
       },
-      errors: []
+      errors: [],
+
+      get user() {
+        return JSON.parse(localStorage.getItem('user')) || null;
+      }
+
     };
   },
   validations: {
@@ -5615,6 +5633,56 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     cancel: function cancel() {
       this.form.body = '';
       this.$v.$reset();
+    },
+    approve: function approve() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var requestOptions, response, responseData;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                requestOptions = {
+                  method: 'PUT',
+                  headers: _services_auth_service__WEBPACK_IMPORTED_MODULE_1__.default.authHeader(),
+                  body: JSON.stringify(_this2.form)
+                };
+                _context2.next = 4;
+                return fetch(_services_route_service__WEBPACK_IMPORTED_MODULE_2__.default.getPostApproveUrl(_this2.post.id), requestOptions);
+
+              case 4:
+                response = _context2.sent;
+                _context2.next = 7;
+                return response.json();
+
+              case 7:
+                responseData = _context2.sent;
+
+                if (response.status === 200) {
+                  _this2.post.status = 1;
+                  toastr.success('Successfully approved.');
+                }
+
+                response.status === 401 ? toastr.warning('Authorization Required.') : '';
+                response.status === 422 && responseData.message ? toastr.error(responseData.message) : '';
+                response.status === 500 ? toastr.error('Something went wrong. Please try again.', 'Oops!') : '';
+                _context2.next = 17;
+                break;
+
+              case 14:
+                _context2.prev = 14;
+                _context2.t0 = _context2["catch"](0);
+                toastr.error('Something went wrong. Please try again.', 'Oops!');
+
+              case 17:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[0, 14]]);
+      }))();
     }
   }
 });
@@ -6423,6 +6491,11 @@ var RouteService = /*#__PURE__*/function () {
     key: "getRegisterUrl",
     value: function getRegisterUrl() {
       return RouteService.baseUrl + "register";
+    }
+  }, {
+    key: "getPostApproveUrl",
+    value: function getPostApproveUrl(postId) {
+      return RouteService.baseUrl + "posts/".concat(postId, "/approve");
     }
   }]);
 
@@ -24909,7 +24982,44 @@ var render = function() {
                   _vm._v(_vm._s(_vm.post.human_date))
                 ])
               ]
-            )
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "flex-grow-1 text-end" }, [
+              !_vm.post.status && _vm.user && _vm.user.role == "admin"
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success btn-sm mt-2",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.approve.apply(null, arguments)
+                        }
+                      }
+                    },
+                    [_vm._v("Approve\n                ")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              (_vm.user && _vm.user.id == _vm.post.user.id) ||
+              (_vm.user && _vm.user.role == "admin")
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger ms-1 me-5 btn-sm mt-2",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.deletePost.apply(null, arguments)
+                        }
+                      }
+                    },
+                    [_vm._v("\n                    Delete\n                ")]
+                  )
+                : _vm._e()
+            ])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "mt-2 ms-5" }, [
@@ -24949,6 +25059,7 @@ var render = function() {
                 ? "border-danger"
                 : ""
             ],
+            attrs: { placeholder: "Type " },
             domProps: { value: _vm.form.body },
             on: {
               keyup: _vm.resetServerValidationErrors,
@@ -24988,7 +25099,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-dark",
+              staticClass: "btn btn-sm btn-dark",
               attrs: { type: "button" },
               on: {
                 click: function($event) {
@@ -25003,7 +25114,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-outline-dark ms-1",
+              staticClass: "btn btn-sm btn-outline-dark ms-1",
               attrs: { type: "button" },
               on: {
                 click: function($event) {
