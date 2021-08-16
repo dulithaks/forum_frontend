@@ -9,6 +9,11 @@ class AuthService {
         }
     }
 
+    isAuthUserAdmin() {
+        let user = JSON.parse(localStorage.getItem('user'));
+        return user && user.api_token && user.role == 'admin' ? true : false;
+    }
+
     user() {
         let user = JSON.parse(localStorage.getItem('user'));
         return user || null;

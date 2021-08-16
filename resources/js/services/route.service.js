@@ -24,6 +24,12 @@ class RouteService {
         return url;
     }
 
+    getPendingPostsUrl(form, filter) {
+        let url = RouteService.baseUrl + 'posts?filter=' + filter;
+        url +=  form.term ? '&term=' + form.term.trim() : '';
+        return url;
+    }
+
     getCreatePostUrl() {
         return RouteService.baseUrl + `posts`
     }

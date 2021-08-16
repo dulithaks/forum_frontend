@@ -5,6 +5,7 @@ import PostList from "./components/PostList";
 import PostCreate from "./components/PostCreate";
 import Register from "./components/Register";
 import MyPostList from "./components/MyPostList";
+import PostsToApprove from "./components/PostsToApprove";
 
 export const routes = [
     {
@@ -58,6 +59,19 @@ export const routes = [
             }
             else {
                 return next({ name: 'login'});
+            }
+        }
+    },
+    {
+        name: 'myPosts',
+        path: '/posts/approve',
+        component: PostsToApprove,
+        beforeEnter: (to, form, next) =>{
+            if(AuthService.isAuthUserAdmin()) {
+                next();
+            }
+            else {
+                return next({ name: 'home'});
             }
         }
     },

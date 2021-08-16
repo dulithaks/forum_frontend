@@ -5971,18 +5971,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['filter'],
+  props: ['filter', 'pageTitle'],
   components: {
     Post: _Post__WEBPACK_IMPORTED_MODULE_4__.default,
     Comments: _Comments__WEBPACK_IMPORTED_MODULE_3__.default
   },
   mounted: function mounted() {
-    console.log('Component mounted.');
+    console.log('Component mounted.', this.filter, this.pageTitle);
   },
   data: function data() {
     return {
@@ -6011,6 +6012,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 if (_this.filter && _this.filter == 'my-posts') {
                   resourceUrl = _services_route_service__WEBPACK_IMPORTED_MODULE_2__.default.getMyPostsUrl(_this.form, _services_auth_service__WEBPACK_IMPORTED_MODULE_1__.default.user());
+                } else if (_this.filter && _this.filter == 'pending-posts') {
+                  resourceUrl = _services_route_service__WEBPACK_IMPORTED_MODULE_2__.default.getPendingPostsUrl(_this.form, _this.filter);
                 }
 
                 requestOptions = {
@@ -6054,6 +6057,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee, null, [[1, 16]]);
       }))();
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PostsToApprove.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PostsToApprove.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _PostList__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PostList */ "./resources/js/components/PostList.vue");
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    PostList: _PostList__WEBPACK_IMPORTED_MODULE_0__.default
   }
 });
 
@@ -6389,6 +6417,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_PostCreate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/PostCreate */ "./resources/js/components/PostCreate.vue");
 /* harmony import */ var _components_Register__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/Register */ "./resources/js/components/Register.vue");
 /* harmony import */ var _components_MyPostList__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/MyPostList */ "./resources/js/components/MyPostList.vue");
+/* harmony import */ var _components_PostsToApprove__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/PostsToApprove */ "./resources/js/components/PostsToApprove.vue");
+
 
 
 
@@ -6447,6 +6477,19 @@ var routes = [{
       });
     }
   }
+}, {
+  name: 'myPosts',
+  path: '/posts/approve',
+  component: _components_PostsToApprove__WEBPACK_IMPORTED_MODULE_7__.default,
+  beforeEnter: function beforeEnter(to, form, next) {
+    if (_services_auth_service__WEBPACK_IMPORTED_MODULE_2__.default.isAuthUserAdmin()) {
+      next();
+    } else {
+      return next({
+        name: 'home'
+      });
+    }
+  }
 }];
 
 /***/ }),
@@ -6484,6 +6527,12 @@ var AuthService = /*#__PURE__*/function () {
       } else {
         return false;
       }
+    }
+  }, {
+    key: "isAuthUserAdmin",
+    value: function isAuthUserAdmin() {
+      var user = JSON.parse(localStorage.getItem('user'));
+      return user && user.api_token && user.role == 'admin' ? true : false;
     }
   }, {
     key: "user",
@@ -6592,6 +6641,13 @@ var RouteService = /*#__PURE__*/function () {
     key: "getMyPostsUrl",
     value: function getMyPostsUrl(form, user) {
       var url = RouteService.baseUrl + 'posts?userId=' + user.id;
+      url += form.term ? '&term=' + form.term.trim() : '';
+      return url;
+    }
+  }, {
+    key: "getPendingPostsUrl",
+    value: function getPendingPostsUrl(form, filter) {
+      var url = RouteService.baseUrl + 'posts?filter=' + filter;
       url += form.term ? '&term=' + form.term.trim() : '';
       return url;
     }
@@ -24279,6 +24335,45 @@ component.options.__file = "resources/js/components/PostList.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/PostsToApprove.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/PostsToApprove.vue ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _PostsToApprove_vue_vue_type_template_id_6df7dd2c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PostsToApprove.vue?vue&type=template&id=6df7dd2c& */ "./resources/js/components/PostsToApprove.vue?vue&type=template&id=6df7dd2c&");
+/* harmony import */ var _PostsToApprove_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PostsToApprove.vue?vue&type=script&lang=js& */ "./resources/js/components/PostsToApprove.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _PostsToApprove_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _PostsToApprove_vue_vue_type_template_id_6df7dd2c___WEBPACK_IMPORTED_MODULE_0__.render,
+  _PostsToApprove_vue_vue_type_template_id_6df7dd2c___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/PostsToApprove.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Register.vue":
 /*!**********************************************!*\
   !*** ./resources/js/components/Register.vue ***!
@@ -24446,6 +24541,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/PostsToApprove.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/PostsToApprove.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PostsToApprove_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PostsToApprove.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PostsToApprove.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PostsToApprove_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
 /***/ "./resources/js/components/Register.vue?vue&type=script&lang=js&":
 /*!***********************************************************************!*\
   !*** ./resources/js/components/Register.vue?vue&type=script&lang=js& ***!
@@ -24594,6 +24705,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PostList_vue_vue_type_template_id_4720a3c9___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PostList_vue_vue_type_template_id_4720a3c9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PostList.vue?vue&type=template&id=4720a3c9& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PostList.vue?vue&type=template&id=4720a3c9&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/PostsToApprove.vue?vue&type=template&id=6df7dd2c&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/PostsToApprove.vue?vue&type=template&id=6df7dd2c& ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PostsToApprove_vue_vue_type_template_id_6df7dd2c___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PostsToApprove_vue_vue_type_template_id_6df7dd2c___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PostsToApprove_vue_vue_type_template_id_6df7dd2c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PostsToApprove.vue?vue&type=template&id=6df7dd2c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PostsToApprove.vue?vue&type=template&id=6df7dd2c&");
 
 
 /***/ }),
@@ -24752,7 +24880,10 @@ var render = function() {
                                       "router-link",
                                       {
                                         staticClass: "dropdown-item",
-                                        attrs: { to: "/", href: "#" }
+                                        attrs: {
+                                          to: "/posts/approve",
+                                          href: "#"
+                                        }
                                       },
                                       [_vm._v("Waiting for approve")]
                                     )
@@ -25099,7 +25230,9 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("post-list", { attrs: { filter: "my-posts" } })
+  return _c("post-list", {
+    attrs: { filter: "pending-posts", "page-title": "My Posts" }
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -25511,7 +25644,9 @@ var render = function() {
     _c("div", { staticClass: "container pb-5" }, [
       _c("div", { staticClass: "d-flex justify-content-center row" }, [
         _c("div", { staticClass: "col-md-8 my-2" }, [
-          _c("h1", [_vm._v("Posts")]),
+          _c("h1", { staticClass: "mb-4" }, [
+            _vm._v(_vm._s(_vm.pageTitle || "Posts"))
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "d-flex" }, [
             _c("input", {
@@ -25574,6 +25709,31 @@ var render = function() {
       ])
     ])
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PostsToApprove.vue?vue&type=template&id=6df7dd2c&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PostsToApprove.vue?vue&type=template&id=6df7dd2c& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("post-list", { attrs: { "page-title": "Posts For Approve" } })
 }
 var staticRenderFns = []
 render._withStripped = true

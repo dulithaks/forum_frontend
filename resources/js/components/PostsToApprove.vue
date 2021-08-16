@@ -1,5 +1,5 @@
 <template>
-    <post-list filter="pending-posts" page-title="My Posts"></post-list>
+    <post-list  page-title="Posts For Approve"></post-list>
 </template>
 
 <script>

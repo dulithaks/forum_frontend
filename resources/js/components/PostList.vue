@@ -3,7 +3,8 @@
         <div class="container pb-5">
             <div class="d-flex justify-content-center row">
                 <div class="col-md-8 my-2">
-                    <h1>Posts</h1>
+                    <h1 class="mb-4">{{ pageTitle || 'Posts' }}</h1>
+
                     <div class="d-flex">
                         <input v-model="form.term" class="form-control me-2" type="search" placeholder="Search"
                                aria-label="Search">
@@ -31,13 +32,16 @@ import Comments from "./Comments";
 import Post from "./Post";
 
 export default {
-    props: ['filter'],
+    props: [
+        'filter',
+        'pageTitle',
+    ],
     components: {
         Post,
         Comments
     },
     mounted() {
-        console.log('Component mounted.')
+        console.log('Component mounted.', this.filter, this.pageTitle)
     },
     data() {
         return {
@@ -56,9 +60,12 @@ export default {
 
             try {
                 let resourceUrl = RouteService.getPostsUrl(this.form);
-                
+
                 if(this.filter && this.filter == 'my-posts') {
                     resourceUrl = RouteService.getMyPostsUrl(this.form, AuthService.user());
+                }
+                else if(this.filter && this.filter == 'pending-posts') {
+                    resourceUrl = RouteService.getPendingPostsUrl(this.form, this.filter);
                 }
 
                 const requestOptions = {

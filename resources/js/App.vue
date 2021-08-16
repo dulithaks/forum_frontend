@@ -32,7 +32,7 @@
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li>
-                                    <router-link to="/" class="dropdown-item" href="#">Waiting for approve</router-link>
+                                    <router-link to="/posts/approve" class="dropdown-item" href="#">Waiting for approve</router-link>
                                 </li>
                             </ul>
                         </li>
