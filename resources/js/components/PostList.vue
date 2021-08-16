@@ -18,6 +18,9 @@
                     <div v-for="(post, index) in posts" :key="post.id">
                         <post :post="post"></post>
                     </div>
+                    <div v-if="noResultFound" class="fs-5 fw-normal">
+                        No result found.
+                    </div>
                 </div>
             </div>
         </div>
@@ -41,14 +44,15 @@ export default {
         Comments
     },
     mounted() {
-        console.log('Component mounted.', this.filter, this.pageTitle)
+        this.form.term = null;
     },
     data() {
         return {
             posts: [],
             form: {
                 term: null,
-            }
+            },
+            noResultFound: false,
         }
     },
     created() {
@@ -61,10 +65,9 @@ export default {
             try {
                 let resourceUrl = RouteService.getPostsUrl(this.form);
 
-                if(this.filter && this.filter == 'my-posts') {
+                if (this.filter && this.filter == 'my-posts') {
                     resourceUrl = RouteService.getMyPostsUrl(this.form, AuthService.user());
-                }
-                else if(this.filter && this.filter == 'pending-posts') {
+                } else if (this.filter && this.filter == 'pending-posts') {
                     resourceUrl = RouteService.getPendingPostsUrl(this.form, this.filter);
                 }
 
@@ -80,6 +83,7 @@ export default {
 
                 if (response.status === 200) {
                     this.posts = responseData.data;
+                    this.noResultFound = this.posts.length == 0 ? true : false;
                 }
 
                 if (response.status === 401) {

@@ -5073,6 +5073,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       get userFirstName() {
         var user = JSON.parse(localStorage.getItem('user'));
         return user.first_name || 'User';
+      },
+
+      get authUserAdmin() {
+        return _services_auth_service__WEBPACK_IMPORTED_MODULE_1__.default.isAuthUserAdmin();
       }
 
     };
@@ -6023,6 +6027,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 
 
 
@@ -6034,14 +6041,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     Comments: _Comments__WEBPACK_IMPORTED_MODULE_3__.default
   },
   mounted: function mounted() {
-    console.log('Component mounted.', this.filter, this.pageTitle);
+    this.form.term = null;
   },
   data: function data() {
     return {
       posts: [],
       form: {
         term: null
-      }
+      },
+      noResultFound: false
     };
   },
   created: function created() {
@@ -6085,6 +6093,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 if (response.status === 200) {
                   _this.posts = responseData.data;
+                  _this.noResultFound = _this.posts.length == 0 ? true : false;
                 }
 
                 if (response.status === 401) {
@@ -6432,7 +6441,8 @@ window.toastr = __webpack_require__(/*! toastr */ "./node_modules/toastr/toastr.
 window.toastr.options = {
   "closeButton": true,
   "positionClass": "toast-top-center",
-  "onclick": null
+  "onclick": null,
+  "progressBar": true
 };
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -24927,25 +24937,33 @@ var render = function() {
                                   1
                                 ),
                                 _vm._v(" "),
-                                _vm._m(1),
+                                _vm.authUserAdmin
+                                  ? _c("li", [
+                                      _c("hr", {
+                                        staticClass: "dropdown-divider"
+                                      })
+                                    ])
+                                  : _vm._e(),
                                 _vm._v(" "),
-                                _c(
-                                  "li",
-                                  [
-                                    _c(
-                                      "router-link",
-                                      {
-                                        staticClass: "dropdown-item",
-                                        attrs: {
-                                          to: "/posts/approve",
-                                          href: "#"
-                                        }
-                                      },
-                                      [_vm._v("Waiting for approve")]
+                                _vm.authUserAdmin
+                                  ? _c(
+                                      "li",
+                                      [
+                                        _c(
+                                          "router-link",
+                                          {
+                                            staticClass: "dropdown-item",
+                                            attrs: {
+                                              to: "/posts/approve",
+                                              href: "#"
+                                            }
+                                          },
+                                          [_vm._v("Waiting for approve")]
+                                        )
+                                      ],
+                                      1
                                     )
-                                  ],
-                                  1
-                                )
+                                  : _vm._e()
                               ]
                             )
                           ])
@@ -25033,12 +25051,6 @@ var staticRenderFns = [
       },
       [_c("span", { staticClass: "navbar-toggler-icon" })]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", [_c("hr", { staticClass: "dropdown-divider" })])
   }
 ]
 render._withStripped = true
@@ -25457,7 +25469,7 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "mt-2 ms-5" }, [
+              _c("div", { staticClass: "mt-2 mx-5" }, [
                 _c("p", { staticClass: "comment-text" }, [
                   _vm._v(
                     "\n                " +
@@ -25479,7 +25491,7 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "bg-white p-2 pt-0" }, [
+          _c("div", { staticClass: "bg-white p-2 pt-1" }, [
             _c("div", { staticClass: "d-block mx-5" }, [
               _c("textarea", {
                 directives: [
@@ -25752,15 +25764,25 @@ var render = function() {
         _c(
           "div",
           { staticClass: "col-md-8" },
-          _vm._l(_vm.posts, function(post, index) {
-            return _c(
-              "div",
-              { key: post.id },
-              [_c("post", { attrs: { post: post } })],
-              1
-            )
-          }),
-          0
+          [
+            _vm._l(_vm.posts, function(post, index) {
+              return _c(
+                "div",
+                { key: post.id },
+                [_c("post", { attrs: { post: post } })],
+                1
+              )
+            }),
+            _vm._v(" "),
+            _vm.noResultFound
+              ? _c("div", { staticClass: "fs-5 fw-normal" }, [
+                  _vm._v(
+                    "\n                    No result found.\n                "
+                  )
+                ])
+              : _vm._e()
+          ],
+          2
         )
       ])
     ])

@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-2 ms-5">
+            <div class="mt-2 mx-5">
                 <p class="comment-text">
                     {{ post.body }}
                 </p>
@@ -37,7 +37,7 @@
             <comments :post-id="post.id" :latest-comments="post.latest_comments" ref="comments"
                       :key="post.id"></comments>
         </div>
-        <div class="bg-white p-2 pt-0">
+        <div class="bg-white p-2 pt-1">
             <div class="d-block mx-5">
                 <textarea v-model="form.body"
                           v-on:keyup="resetServerValidationErrors"

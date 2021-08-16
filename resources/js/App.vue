@@ -28,10 +28,10 @@
                                 <li>
                                     <router-link to="/my-posts" class="dropdown-item" href="#">My Posts</router-link>
                                 </li>
-                                <li>
+                                <li v-if="authUserAdmin">
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li>
+                                <li v-if="authUserAdmin">
                                     <router-link to="/posts/approve" class="dropdown-item" href="#">Waiting for approve</router-link>
                                 </li>
                             </ul>
@@ -79,6 +79,9 @@ export default {
                 const user = JSON.parse(localStorage.getItem('user'));
                 return user.first_name || 'User';
             },
+            get authUserAdmin () {
+                return AuthService.isAuthUserAdmin();
+            }
         }
     },
     methods: {

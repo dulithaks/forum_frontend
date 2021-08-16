@@ -16,6 +16,7 @@ window.toastr.options = {
     "closeButton": true,
     "positionClass": "toast-top-center",
     "onclick": null,
+    "progressBar": true,
 }
 
 /**
