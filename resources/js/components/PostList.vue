@@ -8,7 +8,7 @@
                     <div class="d-flex">
                         <input v-model="form.term" class="form-control me-2" type="search" placeholder="Search"
                                aria-label="Search">
-                        <button v-on:click="getPosts()" class="btn btn-outline-dark" type="submit">Search</button>
+                        <button v-on:click="search()" class="btn btn-outline-dark" type="submit">Search</button>
 
                     </div>
                 </div>
@@ -64,6 +64,15 @@ export default {
         }
     },
     methods: {
+        search () {
+            this.page = 1;
+            this.lastPage = 1;
+            this.getPosts();
+        },
+        nextPage() {
+            this.page++;
+            this.getPosts();
+        },
         async getPosts() {
             try {
                 let resourceUrl = RouteService.getPostsUrl(this.form, this.page);
@@ -89,7 +98,7 @@ export default {
                     let posts = responseData.data;
                     this.page = posts.current_page;
                     this.lastPage = posts.last_page;
-                    this.posts = this.posts.concat(posts.data);
+                    this.posts = this.lastPage > 1 ? this.posts.concat(posts.data) : posts.data;
                     console.log(this.posts.length)
                 }
 
@@ -100,10 +109,6 @@ export default {
                 toastr.error('Something went wrong. Please try again.', 'Oops!')
             }
         },
-        nextPage() {
-            this.page++;
-            this.getPosts();
-        }
     }
 }
 </script>

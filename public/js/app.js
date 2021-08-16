@@ -5955,7 +5955,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   break;
                 }
 
-                console.log(responseData);
+                toastr.success('Success.');
                 _context.next = 15;
                 return _this.$router.push('/');
 
@@ -6102,6 +6102,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   methods: {
+    search: function search() {
+      this.page = 1;
+      this.lastPage = 1;
+      this.getPosts();
+    },
+    nextPage: function nextPage() {
+      this.page++;
+      this.getPosts();
+    },
     getPosts: function getPosts() {
       var _this = this;
 
@@ -6141,7 +6150,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   posts = responseData.data;
                   _this.page = posts.current_page;
                   _this.lastPage = posts.last_page;
-                  _this.posts = _this.posts.concat(posts.data);
+                  _this.posts = _this.lastPage > 1 ? _this.posts.concat(posts.data) : posts.data;
                   console.log(_this.posts.length);
                 }
 
@@ -6164,10 +6173,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee, null, [[0, 16]]);
       }))();
-    },
-    nextPage: function nextPage() {
-      this.page++;
-      this.getPosts();
     }
   }
 });
@@ -25806,7 +25811,7 @@ var render = function() {
                 attrs: { type: "submit" },
                 on: {
                   click: function($event) {
-                    return _vm.getPosts()
+                    return _vm.search()
                   }
                 }
               },
